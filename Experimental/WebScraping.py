@@ -1,4 +1,9 @@
-import csv
+'''
+Author: Vishal Soomaney
+@License: MIT, See License.txt at root of project. 
+
+A script used to gather data on the internet.
+'''
 import csv
 from bs4 import BeautifulSoup
 import urllib.request
