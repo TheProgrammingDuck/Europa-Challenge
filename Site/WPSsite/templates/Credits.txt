@@ -2,4 +2,5 @@ Authors: Peter Jupp, Flinn Dolman
 
 @License: MIT, See License.txt at root of project. 
 
-This folder contains the template html pages of the site. Perhaps most notably it contains app.html where much of the js for the project is.
+This folder contains the template html pages of the site. Perhaps most notably it contains app.html 
+where much of the js for the project is.
