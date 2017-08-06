@@ -63,7 +63,7 @@ class Standardiser:
                         forecast_loc,
                         header=None,
                         skiprows = [0],
-                        usecols=[1,2,3,4,5,6,8,9,10])
+                        usecols=[1,2,3,4,5,6,7,8,9])
                 X_forecast = self.foredf.values[:,3:]
                 X_forecast = self.standardise_Pred(X_forecast)
                 return X_forecast	
