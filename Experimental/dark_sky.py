@@ -315,7 +315,7 @@ class Weather_data(object):
                    
 
     def output_to_svm(self):
-        currentData=(np.genfromtxt("weather.csv",delimiter=','))
+        currentData=(np.genfromtxt("averageweather.csv",delimiter=','))
         currentData= currentData.tolist()
         currentData.pop(0)
 
@@ -339,7 +339,7 @@ class Weather_data(object):
 
         #print(finalArray)
         df= pd.DataFrame(finalArray,columns=["Days", "Longitude","Latitude", "AvgTemp", "AvgHum","AvgWind", "AvgRain", "14dayAvgTemp", "14dayAvgHum", "14dayAvgWind", "14dayAvgRain"])
-        df.to_csv("finalweather.csv")
+        df.to_csv("svminput.csv")
 
                 
 file='forest_locations.csv'
