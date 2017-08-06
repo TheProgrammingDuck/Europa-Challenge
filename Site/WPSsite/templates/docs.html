@@ -1,0 +1,96 @@
+{% extends "WPSsite/header.html" %}
+
+{% block content %}
+
+<head lang="en">
+	<style>
+	.panels{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ededf5+0,eeeef5+100 */
+	background: rgb(237,237,245); /* Old browsers */
+	background: -moz-linear-gradient(45deg, rgba(237,237,245,1) 0%, rgba(238,238,245,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededf5', endColorstr='#eeeef5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	border-radius: 5px;
+	}
+
+	.fullwidth{
+		margin-left:10px;
+		margin-right:10px;
+		padding-left:50px;
+		padding-right:50px;
+	}	
+	
+	
+
+	</style>
+	
+{% load staticfiles %}
+</head>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">Project Specification</h3>
+</center>
+<br />
+<p>We first learnt about the Europa Challenge towards the end of May 2017. The goal of creating an application that uses NASA's WebWorldWind to help save the planet was an appealing target. 
+With our strong collective experience of software engineering, we saw potential in giving the challenge a go.</p><br />
+<p>Initial brainstorming revolved around predicting natural disasters, such as hurricanes, tornadoes, wildfires and flooding. Wildfires eventually came out on top, following several fierce
+debates within the team. We then spent a week researching wildfires, how they can be predicted, and the types of data we will need to do this. Eventually, we came up with a project specification to show to our
+mentor Lilian.</p>
+<br />
+<h4><a href="{% static 'pdf/Project Specification.pdf' %}" target="_blank" >Click here to read it</a></h4>
+<br />
+</div>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">Data Retrieval</h3>
+</center>
+<br />
+{% include 'WPSsite/DataDocs.html' %}
+<br />
+</div>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">Algorithm</h3>
+</center>
+<br />
+{% include 'WPSsite/SVMDocs.html' %}
+<br />
+</div>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">WebWorldWind</h3>
+</center>
+<br />
+{% include 'WPSsite/WebWorldWindDocs.html' %}
+<br />
+</div>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3"><a href="https://github.com/TheProgrammingDuck/Europa-Challenge" target="_blank">Full Source Code</a></h3>
+</center>
+<br />
+</div>
+<br />
+
+{% endblock %}

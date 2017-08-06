@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+<title>SVMDocs</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<style type="text/css">
+@media print {
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutter,
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutters {
+    background-color: #fff;
+  }
+}
+@media not print {
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutter,
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutters {
+    background-color: #fff;
+  }
+}
+@media not print {
+  #texteditor-backdrop #texteditor-container {
+    padding: 0px;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+    box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  }
+}
+/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area .rendered_html table {
+  margin-left: 0;
+  margin-right: 0;
+}
+div.output_area .rendered_html img {
+  margin-left: 0;
+  margin-right: 0;
+}
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+.rendered_html em {
+  font-style: italic;
+}
+.rendered_html strong {
+  font-weight: bold;
+}
+.rendered_html u {
+  text-decoration: underline;
+}
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+.rendered_html h1 {
+  font-size: 185.7%;
+  margin: 1.08em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h2 {
+  font-size: 157.1%;
+  margin: 1.27em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h3 {
+  font-size: 128.6%;
+  margin: 1.55em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h4 {
+  font-size: 100%;
+  margin: 2em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h5 {
+  font-size: 100%;
+  margin: 2em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+  font-style: italic;
+}
+.rendered_html h6 {
+  font-size: 100%;
+  margin: 2em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+  font-style: italic;
+}
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+.rendered_html ul {
+  list-style: disc;
+  margin: 0em 2em;
+  padding-left: 0px;
+}
+.rendered_html ul ul {
+  list-style: square;
+  margin: 0em 2em;
+}
+.rendered_html ul ul ul {
+  list-style: circle;
+  margin: 0em 2em;
+}
+.rendered_html ol {
+  list-style: decimal;
+  margin: 0em 2em;
+  padding-left: 0px;
+}
+.rendered_html ol ol {
+  list-style: upper-alpha;
+  margin: 0em 2em;
+}
+.rendered_html ol ol ol {
+  list-style: lower-alpha;
+  margin: 0em 2em;
+}
+.rendered_html ol ol ol ol {
+  list-style: lower-roman;
+  margin: 0em 2em;
+}
+.rendered_html ol ol ol ol ol {
+  list-style: decimal;
+  margin: 0em 2em;
+}
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+.rendered_html hr {
+  color: black;
+  background-color: black;
+}
+.rendered_html pre {
+  margin: 1em 2em;
+}
+.rendered_html pre,
+.rendered_html code {
+  border: 0;
+  background-color: #fff;
+  color: #000;
+  font-size: 100%;
+  padding: 0px;
+}
+.rendered_html blockquote {
+  margin: 1em 2em;
+}
+.rendered_html table {
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.rendered_html tr,
+.rendered_html th,
+.rendered_html td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: 1em 2em;
+}
+.rendered_html td,
+.rendered_html th {
+  text-align: left;
+  vertical-align: middle;
+  padding: 4px;
+}
+.rendered_html th {
+  font-weight: bold;
+}
+.rendered_html * + table {
+  margin-top: 1em;
+}
+.rendered_html p {
+  text-align: left;
+}
+.rendered_html * + p {
+  margin-top: 1em;
+}
+.rendered_html img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+.rendered_html svg {
+  max-width: 100%;
+  height: auto;
+}
+.rendered_html img.unconfined,
+.rendered_html svg.unconfined {
+  max-width: none;
+}
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered .rendered_html {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+/*!
+*
+* IPython notebook webapp
+*
+*/
+@media (max-width: 767px) {
+  .notebook_app {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+#ipython-main-app {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  height: 100%;
+}
+div#notebook_panel {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  height: 100%;
+}
+div#notebook {
+  font-size: 14px;
+  line-height: 20px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  width: 100%;
+  /* This spaces the page away from the edge of the notebook area */
+  padding-top: 20px;
+  margin: 0px;
+  outline: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  min-height: 100%;
+}
+@media not print {
+  #notebook-container {
+    padding: 15px;
+    background-color: #fff;
+    min-height: 0;
+    -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+    box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  }
+}
+@media print {
+  #notebook-container {
+    width: 100%;
+  }
+}
+div.ui-widget-content {
+  border: 1px solid #ababab;
+  outline: none;
+}
+pre.dialog {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 0.4em;
+  padding-left: 2em;
+}
+p.dialog {
+  padding: 0.2em;
+}
+/* Word-wrap output correctly.  This is the CSS3 spelling, though Firefox seems
+   to not honor it correctly.  Webkit browsers (Chrome, rekonq, Safari) do.
+ */
+pre,
+code,
+kbd,
+samp {
+  white-space: pre-wrap;
+}
+#fonttest {
+  font-family: monospace;
+}
+p {
+  margin-bottom: 0;
+}
+.end_space {
+  min-height: 100px;
+  transition: height .2s ease;
+}
+.notebook_app > #header {
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+}
+@media not print {
+  .notebook_app {
+    background-color: #EEE;
+  }
+}
+kbd {
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+  margin: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+/* CSS for the cell toolbar */
+.celltoolbar {
+  border: thin solid #CFCFCF;
+  border-bottom: none;
+  background: #EEE;
+  border-radius: 2px 2px 0px 0px;
+  width: 100%;
+  height: 29px;
+  padding-right: 4px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-pack: end;
+  -moz-box-pack: end;
+  box-pack: end;
+  /* Modern browsers */
+  justify-content: flex-end;
+  display: -webkit-flex;
+}
+@media print {
+  .celltoolbar {
+    display: none;
+  }
+}
+.ctb_hideshow {
+  display: none;
+  vertical-align: bottom;
+}
+/* ctb_show is added to the ctb_hideshow div to show the cell toolbar.
+   Cell toolbars are only shown when the ctb_global_show class is also set.
+*/
+.ctb_global_show .ctb_show.ctb_hideshow {
+  display: block;
+}
+.ctb_global_show .ctb_show + .input_area,
+.ctb_global_show .ctb_show + div.text_cell_input,
+.ctb_global_show .ctb_show ~ div.text_cell_render {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.ctb_global_show .ctb_show ~ div.text_cell_render {
+  border: 1px solid #cfcfcf;
+}
+.celltoolbar {
+  font-size: 87%;
+  padding-top: 3px;
+}
+.celltoolbar select {
+  display: block;
+  width: 100%;
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 1px;
+  width: inherit;
+  font-size: inherit;
+  height: 22px;
+  padding: 0px;
+  display: inline-block;
+}
+.celltoolbar select:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.celltoolbar select::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+.celltoolbar select:-ms-input-placeholder {
+  color: #999;
+}
+.celltoolbar select::-webkit-input-placeholder {
+  color: #999;
+}
+.celltoolbar select::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.celltoolbar select[disabled],
+.celltoolbar select[readonly],
+fieldset[disabled] .celltoolbar select {
+  background-color: #eeeeee;
+  opacity: 1;
+}
+.celltoolbar select[disabled],
+fieldset[disabled] .celltoolbar select {
+  cursor: not-allowed;
+}
+textarea.celltoolbar select {
+  height: auto;
+}
+select.celltoolbar select {
+  height: 30px;
+  line-height: 30px;
+}
+textarea.celltoolbar select,
+select[multiple].celltoolbar select {
+  height: auto;
+}
+.celltoolbar label {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.completions {
+  position: absolute;
+  z-index: 110;
+  overflow: hidden;
+  border: 1px solid #ababab;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 6px 10px -1px #adadad;
+  box-shadow: 0px 6px 10px -1px #adadad;
+  line-height: 1;
+}
+.completions select {
+  background: white;
+  outline: none;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  overflow: auto;
+  font-family: monospace;
+  font-size: 110%;
+  color: #000;
+  width: auto;
+}
+.completions select option.context {
+  color: #286090;
+}
+#kernel_logo_widget {
+  float: right !important;
+  float: right;
+}
+#kernel_logo_widget .current_kernel_logo {
+  display: none;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  width: 32px;
+  height: 32px;
+}
+#menubar {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin-top: 1px;
+}
+#menubar .navbar {
+  border-top: 1px;
+  border-radius: 0px 0px 2px 2px;
+  margin-bottom: 0px;
+}
+#menubar .navbar-toggle {
+  float: left;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: none;
+}
+#menubar .navbar-collapse {
+  clear: left;
+}
+.nav-wrapper {
+  border-bottom: 1px solid #e7e7e7;
+}
+i.menu-icon {
+  padding-top: 4px;
+}
+ul#help_menu li a {
+  overflow: hidden;
+  padding-right: 2.2em;
+}
+ul#help_menu li a i {
+  margin-right: -1.2em;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+}
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+.dropdown-submenu > a:after {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: block;
+  content: "\f0da";
+  float: right;
+  color: #333333;
+  margin-top: 2px;
+  margin-right: -10px;
+}
+.dropdown-submenu > a:after.pull-left {
+  margin-right: .3em;
+}
+.dropdown-submenu > a:after.pull-right {
+  margin-left: .3em;
+}
+.dropdown-submenu:hover > a:after {
+  color: #262626;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+}
+#notification_area {
+  float: right !important;
+  float: right;
+  z-index: 10;
+}
+.indicator_area {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+}
+#kernel_indicator {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+  border-left: 1px solid;
+}
+#kernel_indicator .kernel_indicator_name {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+#modal_indicator {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+}
+#readonly-indicator {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+  margin-top: 2px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  display: none;
+}
+.modal_indicator:before {
+  width: 1.28571429em;
+  text-align: center;
+}
+.edit_mode .modal_indicator:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f040";
+}
+.edit_mode .modal_indicator:before.pull-left {
+  margin-right: .3em;
+}
+.edit_mode .modal_indicator:before.pull-right {
+  margin-left: .3em;
+}
+.command_mode .modal_indicator:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: ' ';
+}
+.command_mode .modal_indicator:before.pull-left {
+  margin-right: .3em;
+}
+.command_mode .modal_indicator:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_idle_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f10c";
+}
+.kernel_idle_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_idle_icon:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_busy_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f111";
+}
+.kernel_busy_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_busy_icon:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_dead_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f1e2";
+}
+.kernel_dead_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_dead_icon:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_disconnected_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f127";
+}
+.kernel_disconnected_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_disconnected_icon:before.pull-right {
+  margin-left: .3em;
+}
+.notification_widget {
+  color: #777;
+  z-index: 10;
+  background: rgba(240, 240, 240, 0.5);
+  margin-right: 4px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.notification_widget:focus,
+.notification_widget.focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.notification_widget:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.notification_widget:active,
+.notification_widget.active,
+.open > .dropdown-toggle.notification_widget {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.notification_widget:active:hover,
+.notification_widget.active:hover,
+.open > .dropdown-toggle.notification_widget:hover,
+.notification_widget:active:focus,
+.notification_widget.active:focus,
+.open > .dropdown-toggle.notification_widget:focus,
+.notification_widget:active.focus,
+.notification_widget.active.focus,
+.open > .dropdown-toggle.notification_widget.focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.notification_widget:active,
+.notification_widget.active,
+.open > .dropdown-toggle.notification_widget {
+  background-image: none;
+}
+.notification_widget.disabled:hover,
+.notification_widget[disabled]:hover,
+fieldset[disabled] .notification_widget:hover,
+.notification_widget.disabled:focus,
+.notification_widget[disabled]:focus,
+fieldset[disabled] .notification_widget:focus,
+.notification_widget.disabled.focus,
+.notification_widget[disabled].focus,
+fieldset[disabled] .notification_widget.focus {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.notification_widget .badge {
+  color: #fff;
+  background-color: #333;
+}
+.notification_widget.warning {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.notification_widget.warning:focus,
+.notification_widget.warning.focus {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #985f0d;
+}
+.notification_widget.warning:hover {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.notification_widget.warning:active,
+.notification_widget.warning.active,
+.open > .dropdown-toggle.notification_widget.warning {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.notification_widget.warning:active:hover,
+.notification_widget.warning.active:hover,
+.open > .dropdown-toggle.notification_widget.warning:hover,
+.notification_widget.warning:active:focus,
+.notification_widget.warning.active:focus,
+.open > .dropdown-toggle.notification_widget.warning:focus,
+.notification_widget.warning:active.focus,
+.notification_widget.warning.active.focus,
+.open > .dropdown-toggle.notification_widget.warning.focus {
+  color: #fff;
+  background-color: #d58512;
+  border-color: #985f0d;
+}
+.notification_widget.warning:active,
+.notification_widget.warning.active,
+.open > .dropdown-toggle.notification_widget.warning {
+  background-image: none;
+}
+.notification_widget.warning.disabled:hover,
+.notification_widget.warning[disabled]:hover,
+fieldset[disabled] .notification_widget.warning:hover,
+.notification_widget.warning.disabled:focus,
+.notification_widget.warning[disabled]:focus,
+fieldset[disabled] .notification_widget.warning:focus,
+.notification_widget.warning.disabled.focus,
+.notification_widget.warning[disabled].focus,
+fieldset[disabled] .notification_widget.warning.focus {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.notification_widget.warning .badge {
+  color: #f0ad4e;
+  background-color: #fff;
+}
+.notification_widget.success {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.notification_widget.success:focus,
+.notification_widget.success.focus {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #255625;
+}
+.notification_widget.success:hover {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+.notification_widget.success:active,
+.notification_widget.success.active,
+.open > .dropdown-toggle.notification_widget.success {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+.notification_widget.success:active:hover,
+.notification_widget.success.active:hover,
+.open > .dropdown-toggle.notification_widget.success:hover,
+.notification_widget.success:active:focus,
+.notification_widget.success.active:focus,
+.open > .dropdown-toggle.notification_widget.success:focus,
+.notification_widget.success:active.focus,
+.notification_widget.success.active.focus,
+.open > .dropdown-toggle.notification_widget.success.focus {
+  color: #fff;
+  background-color: #398439;
+  border-color: #255625;
+}
+.notification_widget.success:active,
+.notification_widget.success.active,
+.open > .dropdown-toggle.notification_widget.success {
+  background-image: none;
+}
+.notification_widget.success.disabled:hover,
+.notification_widget.success[disabled]:hover,
+fieldset[disabled] .notification_widget.success:hover,
+.notification_widget.success.disabled:focus,
+.notification_widget.success[disabled]:focus,
+fieldset[disabled] .notification_widget.success:focus,
+.notification_widget.success.disabled.focus,
+.notification_widget.success[disabled].focus,
+fieldset[disabled] .notification_widget.success.focus {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.notification_widget.success .badge {
+  color: #5cb85c;
+  background-color: #fff;
+}
+.notification_widget.info {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.notification_widget.info:focus,
+.notification_widget.info.focus {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #1b6d85;
+}
+.notification_widget.info:hover {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+.notification_widget.info:active,
+.notification_widget.info.active,
+.open > .dropdown-toggle.notification_widget.info {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+.notification_widget.info:active:hover,
+.notification_widget.info.active:hover,
+.open > .dropdown-toggle.notification_widget.info:hover,
+.notification_widget.info:active:focus,
+.notification_widget.info.active:focus,
+.open > .dropdown-toggle.notification_widget.info:focus,
+.notification_widget.info:active.focus,
+.notification_widget.info.active.focus,
+.open > .dropdown-toggle.notification_widget.info.focus {
+  color: #fff;
+  background-color: #269abc;
+  border-color: #1b6d85;
+}
+.notification_widget.info:active,
+.notification_widget.info.active,
+.open > .dropdown-toggle.notification_widget.info {
+  background-image: none;
+}
+.notification_widget.info.disabled:hover,
+.notification_widget.info[disabled]:hover,
+fieldset[disabled] .notification_widget.info:hover,
+.notification_widget.info.disabled:focus,
+.notification_widget.info[disabled]:focus,
+fieldset[disabled] .notification_widget.info:focus,
+.notification_widget.info.disabled.focus,
+.notification_widget.info[disabled].focus,
+fieldset[disabled] .notification_widget.info.focus {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.notification_widget.info .badge {
+  color: #5bc0de;
+  background-color: #fff;
+}
+.notification_widget.danger {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.notification_widget.danger:focus,
+.notification_widget.danger.focus {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #761c19;
+}
+.notification_widget.danger:hover {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+.notification_widget.danger:active,
+.notification_widget.danger.active,
+.open > .dropdown-toggle.notification_widget.danger {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+.notification_widget.danger:active:hover,
+.notification_widget.danger.active:hover,
+.open > .dropdown-toggle.notification_widget.danger:hover,
+.notification_widget.danger:active:focus,
+.notification_widget.danger.active:focus,
+.open > .dropdown-toggle.notification_widget.danger:focus,
+.notification_widget.danger:active.focus,
+.notification_widget.danger.active.focus,
+.open > .dropdown-toggle.notification_widget.danger.focus {
+  color: #fff;
+  background-color: #ac2925;
+  border-color: #761c19;
+}
+.notification_widget.danger:active,
+.notification_widget.danger.active,
+.open > .dropdown-toggle.notification_widget.danger {
+  background-image: none;
+}
+.notification_widget.danger.disabled:hover,
+.notification_widget.danger[disabled]:hover,
+fieldset[disabled] .notification_widget.danger:hover,
+.notification_widget.danger.disabled:focus,
+.notification_widget.danger[disabled]:focus,
+fieldset[disabled] .notification_widget.danger:focus,
+.notification_widget.danger.disabled.focus,
+.notification_widget.danger[disabled].focus,
+fieldset[disabled] .notification_widget.danger.focus {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.notification_widget.danger .badge {
+  color: #d9534f;
+  background-color: #fff;
+}
+div#pager {
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  overflow: hidden;
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  max-height: 50%;
+  padding-top: 8px;
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  /* Display over codemirror */
+  z-index: 100;
+  /* Hack which prevents jquery ui resizable from changing top. */
+  top: auto !important;
+}
+div#pager pre {
+  line-height: 1.21429em;
+  color: #000;
+  background-color: #f7f7f7;
+  padding: 0.4em;
+}
+div#pager #pager-button-area {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+}
+div#pager #pager-contents {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+div#pager #pager-contents #pager-container {
+  position: relative;
+  padding: 15px 0px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+div#pager .ui-resizable-handle {
+  top: 0px;
+  height: 8px;
+  background: #f7f7f7;
+  border-top: 1px solid #cfcfcf;
+  border-bottom: 1px solid #cfcfcf;
+  /* This injects handle bars (a short, wide = symbol) for 
+        the resize handle. */
+}
+div#pager .ui-resizable-handle::after {
+  content: '';
+  top: 2px;
+  left: 50%;
+  height: 3px;
+  width: 30px;
+  margin-left: -15px;
+  position: absolute;
+  border-top: 1px solid #cfcfcf;
+}
+.quickhelp {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  line-height: 1.8em;
+}
+.shortcut_key {
+  display: inline-block;
+  width: 21ex;
+  text-align: right;
+  font-family: monospace;
+}
+.shortcut_descr {
+  display: inline-block;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+span.save_widget {
+  margin-top: 6px;
+}
+span.save_widget span.filename {
+  height: 1em;
+  line-height: 1em;
+  padding: 3px;
+  margin-left: 16px;
+  border: none;
+  font-size: 146.5%;
+  border-radius: 2px;
+}
+span.save_widget span.filename:hover {
+  background-color: #e6e6e6;
+}
+span.checkpoint_status,
+span.autosave_status {
+  font-size: small;
+}
+@media (max-width: 767px) {
+  span.save_widget {
+    font-size: small;
+  }
+  span.checkpoint_status,
+  span.autosave_status {
+    display: none;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  span.checkpoint_status {
+    display: none;
+  }
+  span.autosave_status {
+    font-size: x-small;
+  }
+}
+.toolbar {
+  padding: 0px;
+  margin-left: -5px;
+  margin-top: 2px;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.toolbar select,
+.toolbar label {
+  width: auto;
+  vertical-align: middle;
+  margin-right: 2px;
+  margin-bottom: 0px;
+  display: inline;
+  font-size: 92%;
+  margin-left: 0.3em;
+  margin-right: 0.3em;
+  padding: 0px;
+  padding-top: 3px;
+}
+.toolbar .btn {
+  padding: 2px 8px;
+}
+.toolbar .btn-group {
+  margin-top: 0px;
+  margin-left: 5px;
+}
+#maintoolbar {
+  margin-bottom: -3px;
+  margin-top: -8px;
+  border: 0px;
+  min-height: 27px;
+  margin-left: 0px;
+  padding-top: 11px;
+  padding-bottom: 3px;
+}
+#maintoolbar .navbar-text {
+  float: none;
+  vertical-align: middle;
+  text-align: right;
+  margin-left: 5px;
+  margin-right: 0px;
+  margin-top: 0px;
+}
+.select-xs {
+  height: 24px;
+}
+.pulse,
+.dropdown-menu > li > a.pulse,
+li.pulse > a.dropdown-toggle,
+li.pulse.open > a.dropdown-toggle {
+  background-color: #F37626;
+  color: white;
+}
+/**
+ * Primary styles
+ *
+ * Author: Jupyter Development Team
+ */
+/** WARNING IF YOU ARE EDITTING THIS FILE, if this is a .css file, It has a lot
+ * of chance of beeing generated from the ../less/[samename].less file, you can
+ * try to get back the less file by reverting somme commit in history
+ **/
+/*
+ * We'll try to get something pretty, so we
+ * have some strange css to have the scroll bar on
+ * the left with fix button on the top right of the tooltip
+ */
+@-moz-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-moz-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/*properties of tooltip after "expand"*/
+.bigtooltip {
+  overflow: auto;
+  height: 200px;
+  -webkit-transition-property: height;
+  -webkit-transition-duration: 500ms;
+  -moz-transition-property: height;
+  -moz-transition-duration: 500ms;
+  transition-property: height;
+  transition-duration: 500ms;
+}
+/*properties of tooltip before "expand"*/
+.smalltooltip {
+  -webkit-transition-property: height;
+  -webkit-transition-duration: 500ms;
+  -moz-transition-property: height;
+  -moz-transition-duration: 500ms;
+  transition-property: height;
+  transition-duration: 500ms;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 80px;
+}
+.tooltipbuttons {
+  position: absolute;
+  padding-right: 15px;
+  top: 0px;
+  right: 0px;
+}
+.tooltiptext {
+  /*avoid the button to overlap on some docstring*/
+  padding-right: 30px;
+}
+.ipython_tooltip {
+  max-width: 700px;
+  /*fade-in animation when inserted*/
+  -webkit-animation: fadeOut 400ms;
+  -moz-animation: fadeOut 400ms;
+  animation: fadeOut 400ms;
+  -webkit-animation: fadeIn 400ms;
+  -moz-animation: fadeIn 400ms;
+  animation: fadeIn 400ms;
+  vertical-align: middle;
+  background-color: #f7f7f7;
+  overflow: visible;
+  border: #ababab 1px solid;
+  outline: none;
+  padding: 3px;
+  margin: 0px;
+  padding-left: 7px;
+  font-family: monospace;
+  min-height: 50px;
+  -moz-box-shadow: 0px 6px 10px -1px #adadad;
+  -webkit-box-shadow: 0px 6px 10px -1px #adadad;
+  box-shadow: 0px 6px 10px -1px #adadad;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 1000;
+}
+.ipython_tooltip a {
+  float: right;
+}
+.ipython_tooltip .tooltiptext pre {
+  border: 0;
+  border-radius: 0;
+  font-size: 100%;
+  background-color: #f7f7f7;
+}
+.pretooltiparrow {
+  left: 0px;
+  margin: 0px;
+  top: -16px;
+  width: 40px;
+  height: 16px;
+  overflow: hidden;
+  position: absolute;
+}
+.pretooltiparrow:before {
+  background-color: #f7f7f7;
+  border: 1px #ababab solid;
+  z-index: 11;
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  width: 25px;
+  height: 25px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+ul.typeahead-list i {
+  margin-left: -10px;
+  width: 18px;
+}
+ul.typeahead-list {
+  max-height: 80vh;
+  overflow: auto;
+}
+ul.typeahead-list > li > a {
+  /** Firefox bug **/
+  /* see https://github.com/jupyter/notebook/issues/559 */
+  white-space: normal;
+}
+.cmd-palette .modal-body {
+  padding: 7px;
+}
+.cmd-palette form {
+  background: white;
+}
+.cmd-palette input {
+  outline: none;
+}
+.no-shortcut {
+  display: none;
+}
+.command-shortcut:before {
+  content: "(command)";
+  padding-right: 3px;
+  color: #777777;
+}
+.edit-shortcut:before {
+  content: "(edit)";
+  padding-right: 3px;
+  color: #777777;
+}
+#find-and-replace #replace-preview .match,
+#find-and-replace #replace-preview .insert {
+  background-color: #BBDEFB;
+  border-color: #90CAF9;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0px;
+}
+#find-and-replace #replace-preview .replace .match {
+  background-color: #FFCDD2;
+  border-color: #EF9A9A;
+  border-radius: 0px;
+}
+#find-and-replace #replace-preview .replace .insert {
+  background-color: #C8E6C9;
+  border-color: #A5D6A7;
+  border-radius: 0px;
+}
+#find-and-replace #replace-preview {
+  max-height: 60vh;
+  overflow: auto;
+}
+#find-and-replace #replace-preview pre {
+  padding: 5px 10px;
+}
+.terminal-app {
+  background: #EEE;
+}
+.terminal-app #header {
+  background: #fff;
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+}
+.terminal-app .terminal {
+  width: 100%;
+  float: left;
+  font-family: monospace;
+  color: white;
+  background: black;
+  padding: 0.4em;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.4);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.4);
+}
+.terminal-app .terminal,
+.terminal-app .terminal dummy-screen {
+  line-height: 1em;
+  font-size: 14px;
+}
+.terminal-app .terminal .xterm-rows {
+  padding: 10px;
+}
+.terminal-app .terminal-cursor {
+  color: black;
+  background: white;
+}
+.terminal-app #terminado-container {
+  margin-top: 20px;
+}
+/*# sourceMappingURL=style.min.css.map */
+    </style>
+<style type="text/css">
+    .highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+    </style>
+<style type="text/css">
+    
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+    </style>
+
+
+<style type="text/css">
+/* Overrides of notebook CSS for static HTML export */
+body {
+  overflow: visible;
+  padding: 8px;
+}
+
+div#notebook {
+  overflow: visible;
+  border-top: none;
+}@media print {
+  div.cell {
+    display: block;
+    page-break-inside: avoid;
+  } 
+  div.output_wrapper { 
+    display: block;
+    page-break-inside: avoid; 
+  }
+  div.output { 
+    display: block;
+    page-break-inside: avoid; 
+  }
+}
+</style>
+
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+<link rel="stylesheet" href="custom.css">
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --></head>
+<body>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Considering-our-data">Considering our data<a class="anchor-link" href="#Considering-our-data">&#194;&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our initial goal was to apply a ML approach to accurately predict the likelihood of a wildfire occuring. The data we used was first balanced so we had an equal amount of data for both occasions with and without fires. This data was stored in CSV format. Using the Python library Pandas we can analyse the structure of this CSV.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">parsers</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s1">&#39;Data/NewBalanced.csv&#39;</span><span class="p">,</span>
+
+<span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(10341, 23)
+
+
+  CurrentDate  Temp1  Temp2  Temp3  Temp4  avgTemp  Hum1  Hum2  Hum3  Hum4  \
+0  01/13/2011     24     16     13     24    19.25    35    32    34    57   
+1  01/15/2011     28     18     14     25    21.25    64    40    20    45   
+2  01/20/2011     18     12     22     23    18.75    90    69    18    32   
+3  01/28/2011     13     11     17     19    15.00    43    26    27    84   
+4  02/04/2011      8     17     18     13    14.00    70    57    56    84   
+
+   ...   Wind3  Wind4   avgWind  Rain  14DayAvgTemp  14dayAvgHum  \
+0  ...   1.864  0.000  1.242667     0     14.230769    53.916667   
+1  ...   0.621  0.000  0.621000     0     15.392857    46.059524   
+2  ...   0.621  0.000  0.621000     0     18.160714    52.333333   
+3  ...   0.621  0.000  1.242500     0     19.125000    46.107143   
+4  ...   2.486  0.621  1.553500     0     16.160714    64.142857   
+
+   14DayAvgWind  14DayAvgRain              Location  Fire  
+0             2             0  La Ca_ada Flintridge     1  
+1             2             0  La Ca_ada Flintridge     1  
+2             1             0  La Ca_ada Flintridge     1  
+3             1             0  La Ca_ada Flintridge     1  
+4             2             0  La Ca_ada Flintridge     1  
+
+[5 rows x 23 columns]
+
+
+      CurrentDate  Temp1  Temp2  Temp3  Temp4  avgTemp  Hum1  Hum2  Hum3  \
+10340  07/05/2017     31     33     32     25    30.25    33    22    32   
+
+       Hum4  ...   Wind3  Wind4  avgWind  Rain  14DayAvgTemp  14dayAvgHum  \
+10340    36  ...   5.593  7.457  5.59275     0     28.357143    36.678571   
+
+       14DayAvgWind  14DayAvgRain     Location  Fire  
+10340             5             0  placerville     0  
+
+[1 rows x 23 columns]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This file has 23 features and 10,341 data points. Clearly not all of these features are useful for training a model. For example we have date and location. By applying principal component analysis (<a href="https://en.wikipedia.org/wiki/Principal_component_analysis">https://en.wikipedia.org/wiki/Principal_component_analysis</a>) to our data we decided that the 7 features: 'avgTemp', 'avgWind', '14dayAvgTemp', '14dayAvgHum' and '14DayAvgRain' were most conducive to values in the 'Fire' column for whom a 1 corresponds to their being a fire and a 0 to no fire. Next came model selection. Due to the relatively small amount of data we had relative to the number of useful features we opted to go with a Support Vector Machine based model.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Support-Vector-Machines">Support Vector Machines<a class="anchor-link" href="#Support-Vector-Machines">&#194;&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A Support Vector Machine (or SVM for short) is a supervised ML method that can be used for classification of data. Each data item is plotted in n-dimensional space (where n corresponds to the number of features) and then classification is performed by finding a hyperplane that differentiates the classes of the data well. It does so by finding vectors (data points) belonging to each class and basing the position of the hyperplane upon the position of these vectors. These vectors are known as support vectors hence the name.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/static/img/SVM.jpg" alt="title"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>SVM's work particuarly well when the order of the feature-space is large (as in our case) because as its size increases its more likely that the classes will form distinct clusters allowing for a better fitting hyperplane. In addition having a relatively small amount of data isn't game over as presuming the classes form relatively tight data clusters hyperplanes fitted to larger datasets will still be in a similar place to smaller datasets. It is for these reasons we opted to go with a SVM model to make our predictions. Obviously we are assuming that our relatively small dataset is representative of what datap in the class generally looks like and training on a larger dataset likely wouldnt hurt. This is something we would like to improve our model by doing if provided with the resources.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="A-SVM-in-the-context-of-Wildfires">A SVM in the context of Wildfires<a class="anchor-link" href="#A-SVM-in-the-context-of-Wildfires">&#194;&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the context of our data the classes we are training to classify are given by the 'Fire' column in the CSV file (0 for no fire and 1 for fire). We shall consider only the features we deemed important through PCA when training our model. Construction of the dataFrame and splitting of data looks like this:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">parsers</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s1">&#39;Data/NewBalanced.csv&#39;</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">skiprows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">22</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">[:,:</span><span class="mi">7</span><span class="p">]</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span><span class="mi">7</span><span class="p">]</span>
+
+<span class="c1">#split the data into training and testing data</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next we have to standardise the data. Standardisation is an integral part of preprocessing for an SVM. It ensures all features exist on the same scale.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span> <span class="c1">#allows data to be standardised under the same scale</span>
+<span class="n">X_train_std</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_std</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Implementing an SVM from scratch would be a tedious and tricky process. Luckily Scikit-Learn has already done so by creating a python wrapper for the C++ library LibSVM. LibSVM is a very efficient library for running SVM related tasks.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">cache_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span> <span class="n">coef0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+<span class="n">decision_function_shape</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span>
+<span class="n">max_iter</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shrinking</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="n">tol</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> 
+
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>SVC(C=1.0, cache_size=200, class_weight=&#39;balanced&#39;, coef0=0.0,
+  decision_function_shape=None, degree=3, gamma=&#39;auto&#39;, kernel=&#39;rbf&#39;,
+  max_iter=-1, probability=True, random_state=None, shrinking=True,
+  tol=0.001, verbose=False)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Of the input parameters above, the most important are C, class_weight, gamma and kernel. The purpose of C is to decide the trade off between fitting the model to the training set and maintaining a smooth hyperplane. class_weight simply denotes the structure of the training data provided relative to its classes. Our data is balanced hence we have used that here. gamma corresponds to how much influence a single training point has over the fitting of the hyperplane. In this example we have let sklearn select gamma automatically. Finally the kernel is the function that is responsible for finding the mathematical relationship between the independent feature vectors and corresponding classes. In our case we have selected 'rbf' or 'radial based field'. This kernel allows fitting of a non linear hyperplane to the data. This is useful as the relationship between our features (i.e. avgtemp, avghumid etc) and our classes (Fire, No fire) may not necessarily be linear.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above code equates to training the model. Predictions can now be made with the following code snippet</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 0.,  0.,  0., ...,  1.,  0.,  1.])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In addition an accuracy score can be calculated similarily:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Accuracy is: {}%&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Accuracy is: 72.5749274895%
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This accuracy can be tweaked by changing hyper-parameters used to train the model as well as altering the data that is trained upon by means of changing the seed when splitting the data. Our final model obtains an accuracy of x%.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="What-about-probability-though?">What about probability though?<a class="anchor-link" href="#What-about-probability-though?">&#194;&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When designing a model for a scenario such as a wildfire it would be far more useful to have probability values associated with the classe outcomes predicted. Unfortunately this is not an out of the box functionality of SVM's. Luckily however, it can be achieved by applying a procedure known as Platt scaling (<a href="https://en.wikipedia.org/wiki/Platt_scaling">https://en.wikipedia.org/wiki/Platt_scaling</a>). Essentially this approach applies a probability distribution to predicted classes by means of the sigmoid function. In doing so it allows us to associate probabilities of data points being in certain classes. LibSVM, thus by proxy Scikit-Learn has an efficient implementation of this procedure which means it is only a single line to do so:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[ 0.5684794 ,  0.4315206 ],
+       [ 0.58296673,  0.41703327],
+       [ 0.88029603,  0.11970397],
+       ..., 
+       [ 0.12410921,  0.87589079],
+       [ 0.8163141 ,  0.1836859 ],
+       [ 0.11962028,  0.88037972]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Making-predictions">Making predictions<a class="anchor-link" href="#Making-predictions">&#194;&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Predictions can be made using this model by first retrieving the prediction data values from a CSV, standardising them under the same scale used for the training and then running Scikit-Learn's predict() function as shown earlier. For example:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">foredf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">parsers</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s1">&#39;Data/svminput.csv&#39;</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">skiprows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">X_forecast</span> <span class="o">=</span> <span class="n">foredf</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span><span class="mi">3</span><span class="p">:]</span>
+<span class="n">X_forecast_std</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_forecast</span><span class="p">)</span>
+
+<span class="n">fore_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_forecast_std</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We then opted to append the predictions array above to a pandas dataFrame and compile that data frame as a new CSV 'svmoutput.csv'</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">forearray</span> <span class="o">=</span> <span class="n">foredf</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">forearray</span><span class="p">:</span>
+
+    <span class="n">element</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fore_pred</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1">#element.append(fore_prob[i][1])</span>
+
+    <span class="n">i</span> <span class="o">+=</span><span class="mi">1</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">forearray</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Data/svmoutput.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can imagine the generated CSV has the same format as the input CSV with the only exception being the appended prediction column added to the end.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">parsers</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s1">&#39;Data/svmoutput.csv&#39;</span><span class="p">,</span> 
+
+<span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(1158, 11)
+
+
+   0          1           2       3   4     5          6          7  8  9  10
+0  0  37.810696 -122.183232  24.285  49  2.35  19.210625  64.125000  3  1   0
+1  1  37.810696 -122.183232  19.725  61  3.53  19.210625  64.125000  3  1   0
+2  2  37.810696 -122.183232  17.725  69  3.85  19.210625  64.125000  3  1   0
+3  3  37.810696 -122.183232  18.635  67  3.35  19.210625  64.125000  3  1   0
+4  4  37.810696 -122.183232  19.520  62  2.73  19.210625  64.125000  3  1   0
+5  5  37.810696 -122.183232  19.560  62  2.76  19.210625  64.125000  3  1   0
+6  0  38.267458 -114.595831  26.085  26  2.31  23.372187  35.270833  2  2   1
+7  1  38.267458 -114.595831  24.195  32  4.26  23.372187  35.270833  2  2   1
+8  2  38.267458 -114.595831  24.155  34  4.10  23.372187  35.270833  2  2   1
+9  3  38.267458 -114.595831  23.075  43  3.87  23.372187  35.270833  2  2   1
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Our-code-in-practice">Our code in practice<a class="anchor-link" href="#Our-code-in-practice">&#194;&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The ideas and code snippets above are the basis for our code. We have opted to use an object orientated approach as this lends us several advantages such as clarity and generalisability. Below is an example of a script that utilises our code to process, standardise, train then test a model. It outputs a prediction for every value in the test dataset along with its probability (calculated through Platt scaling) and the correct value. Finally it outputs the overall accuracy the model achieved when making predictions upon the dataset.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Author: Flinn Dolman</span>
+
+<span class="sd">@License: MIT</span>
+
+<span class="sd">An example script that leverages our code to train a model and make predictions based upon it. Predictions</span>
+<span class="sd">are printed to stdout and then the model used to make the predictions is saved.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">SVM</span> <span class="kn">import</span> <span class="n">SVM</span>
+<span class="kn">from</span> <span class="nn">Standardiser</span> <span class="kn">import</span> <span class="n">Standardiser</span>
+
+
+<span class="k">def</span> <span class="nf">Main</span><span class="p">():</span>
+    <span class="n">forecast_loc</span> <span class="o">=</span> <span class="s1">&#39;Data/svminput.csv&#39;</span>
+    <span class="n">standard_data</span> <span class="o">=</span> <span class="n">Standardiser</span><span class="p">()</span>
+    <span class="n">standard_data</span><span class="o">.</span><span class="n">initialise</span><span class="p">()</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">SVM</span><span class="p">()</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">initialise</span><span class="p">(</span><span class="n">standard_data</span><span class="o">.</span><span class="n">get_std_X_train</span><span class="p">(),</span><span class="n">standard_data</span><span class="o">.</span><span class="n">get_std_X_test</span><span class="p">(),</span><span class="n">standard_data</span><span class="o">.</span><span class="n">get_y_train</span><span class="p">(),</span><span class="n">standard_data</span><span class="o">.</span><span class="n">get_y_test</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">These are the predictions: {}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predictions</span><span class="p">()))</span>
+    <span class="n">predictions</span><span class="p">,</span> <span class="n">probs</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predictions</span><span class="p">()</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="n">standard_data</span><span class="o">.</span><span class="n">get_y_test</span><span class="p">()</span>
+
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Prediction: {}, with probability: {}, correct value: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">probs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Accuracy is: {}%&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">accuracy</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+
+    <span class="n">fore_Pred</span><span class="p">,</span> <span class="n">fore_Prob</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">forecast_Pred</span><span class="p">(</span><span class="n">standard_data</span><span class="o">.</span><span class="n">loadForecast</span><span class="p">(</span><span class="n">forecast_loc</span><span class="p">))</span>
+
+    <span class="n">standard_data</span><span class="o">.</span><span class="n">make_CSV</span><span class="p">(</span><span class="n">fore_Pred</span><span class="p">,</span><span class="n">fore_Prob</span><span class="p">,</span><span class="s1">&#39;Data/svmoutputnew.csv&#39;</span><span class="p">)</span>
+
+    <span class="n">clf</span><span class="o">.</span><span class="n">saveModel</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="n">Main</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The structure of our code means that all this script is really responsible for is initialisation of objects and the formatting of the predictions, probabilities and correct values.</p>
+
+</div>
+</div>
+</div>
+    </div>
+  </div>
+</body>
+
+ 
+
+
+</html>

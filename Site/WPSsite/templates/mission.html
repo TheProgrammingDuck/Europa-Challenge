@@ -1,0 +1,149 @@
+{% extends "WPSsite/header.html" %}
+
+{% block content %}
+
+<head lang="en">
+	<style>
+	.panels{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ededf5+0,eeeef5+100 */
+	background: rgb(237,237,245); /* Old browsers */
+	background: -moz-linear-gradient(45deg, rgba(237,237,245,1) 0%, rgba(238,238,245,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededf5', endColorstr='#eeeef5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	border-radius: 5px;
+	}
+
+	.fullwidth{
+		margin-left:10px;
+		margin-right:10px;
+		padding-left:100px;
+		padding-right:100px;
+	}	
+	
+
+	
+	.just{
+	text-align:justify;
+	}
+	
+	
+	
+	
+	
+	
+	.content {
+  padding-top: 20px;
+}
+
+section {
+  width: 800px;
+  margin: auto;
+  text-align: center;
+  margin-bottom: 3em;
+}
+
+.line-title {
+  margin-bottom: 1.3em;
+  font-size: 1.3em;
+  text-align: center;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.line-title:before, .line-title:after {
+  content: '';
+  display: inline-block;
+  height: 1px;
+  background: #6F7C80;
+  width: 50%;
+  position: relative;
+  vertical-align: middle;
+}
+.line-title:before {
+  left: -0.5em;
+  margin-left: -50%;
+}
+.line-title:after {
+  right: -0.5em;
+  margin-right: -50%;
+}
+
+	
+	</style>
+	{% load staticfiles %}
+</head>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h1>Our Mission</h3>
+<section class="content">
+  
+  <section>
+    <header>
+      <h1 class="line-title">Let's predict wildfires!</h1>    
+    </header>
+    <article>
+      When we chose to take part in this challenge, we decided that we wanted to provide a product that could be directly used to help both people and the environment.
+<br /><br />
+		There exist many natural disasters in the world. Flooding, fires and tornadoes all cause huge widespread damage and suffering worldwide, affecting people and infrastructure. Today, in the 21st Century, we can predict rainfall and thus calculate the chances of flooding, we can monitor wind speeds and directions and thus predict hurricane paths.  And yet, there doesn’t seem to exist a freely available, widely used platform for wildfire prediction.
+
+    </article>
+  </section>
+  <section>
+    <header>
+      <h1 class="line-title">So many questions...</h1>    
+    </header>
+    <article>
+      Could it be that the necessary data for it was unavailable? Surely not, we live in the age of big data. 
+<br /><br />
+Could it be that we lack the technology to implement a predicting model? Highly unlikely considering the massive advances made in machine learning and AI over the last few decades. 
+<br /><br />
+Could it genuinely just be that very few people have seriously tried to do this before?
+
+    </article>
+  </section>
+  <section>
+    <header>
+      <h1 class="line-title">Our impact</h1>    
+    </header>
+    <article>
+      Upon further consideration, it occurred to us that with increasing global warming, the issue of wildfires is sadly only going to get worse and this is soon going to become a much needed tool. It is our hope that if wildfires can be accurately predicted, residents in nearby towns and cities can be evacuated and authorities can take preventative measures to reduce the likelihood of a wildfire actually starting.
+
+    </article>
+  </section>
+  <section>
+    <header>
+      <h1 class="line-title">And why a solution is needed...</h1>    
+    </header>
+    <article>
+      Soon after we started the project, the Portugal forest fire occurred and claimed dozens of lives, this only increased our motivation towards finding a solution and it is our sincere hope that in the future, such disasters will have become a thing of the past.
+
+
+    </article>
+  </section>
+</section>
+</center>
+<br />
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br />
+
+{% endblock %}

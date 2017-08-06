@@ -1,0 +1,414 @@
+{% extends "WPSsite/header.html" %}
+
+{% block content %}
+<head>
+{% load staticfiles %}
+
+
+<style>
+
+.panels{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ededf5+0,eeeef5+100 */
+	background: rgb(237,237,245); /* Old browsers */
+	background: -moz-linear-gradient(45deg, rgba(237,237,245,1) 0%, rgba(238,238,245,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededf5', endColorstr='#eeeef5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	border-radius: 5px;
+}
+
+.fullwidth{
+	margin-left:10px;
+	margin-right:10px;
+}
+
+.rightpanel{
+	width:30%;
+	display:inline-block;
+	margin-left:1.5%;
+	margin-right:10px;
+}
+
+.carousel-caption{
+	width:70%;
+	left:15%;	
+}
+
+.wrapper {
+    display: flex;    
+    width:100%;
+	
+	height:450px;
+}
+
+.wrapper div {
+    flex-basis: 100%;
+}
+
+.glyphicon
+{
+    margin-right:4px !important; /*override*/
+}
+
+.pagination .glyphicon
+{
+    margin-right:0px !important; /*override*/
+}
+
+.pagination a
+{
+    color:#555;
+}
+
+.panel ul
+{
+    padding:0px;
+    margin:0px;
+    list-style:none;
+}
+
+.news-item
+{
+    padding:4px 4px;
+    margin-bottom:10px;
+    border-bottom:1px dotted #555; 
+}
+
+.panel-body{
+	background: rgb(237,237,245); /* Old browsers */
+	background: -moz-linear-gradient(45deg, rgba(237,237,245,1) 0%, rgba(238,238,245,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededf5', endColorstr='#eeeef5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	height:406px;
+}
+
+.panel-heading{
+	background-color:red;
+}
+
+	/* Control buttons  */
+	#quote-carousel .carousel-control
+	{
+	  background: none;
+	  color: #222;
+	  font-size: 2.3em;
+	  text-shadow: none;
+	  margin-top: 75px;
+	  margin-left: -30px;
+	  margin-right: -30px;
+	}
+	
+	
+	/* Previous button  */
+	#quote-carousel .carousel-control.left 
+	{
+	  left: -12px;
+	}
+	/* Next button  */
+	#quote-carousel .carousel-control.right 
+	{
+	  right: -12px;
+	}
+	/* Changes the position of the indicators */
+	#quote-carousel .carousel-indicators 
+	{
+	  right: 50%;
+	  top: auto;
+	  bottom: 0px;
+	  margin-right: -19px;
+	}
+	/* Changes the color of the indicators */
+	#quote-carousel .carousel-indicators li 
+	{
+	  background: #c0c0c0;
+	}
+	#quote-carousel .carousel-indicators .active 
+	{
+	  background: #333333;
+	}
+
+	/* End carousel */
+
+	.item blockquote {
+		border-left: none; 
+		margin: 0;
+	}
+
+	.item blockquote img {
+		margin-bottom: 10px;
+	}
+
+	.item blockquote h2:before {
+		content: "\f10d";
+		font-family: 'Fontawesome';
+		float: left;
+		margin-right: 10px;
+	}
+	
+	/**
+  MEDIA QUERIES
+*/
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    #quote-carousel 
+    {
+      margin-bottom: 0;
+      padding: 0 40px 30px 40px;
+      margin-top: 30px;
+    }
+    
+}
+
+/* Small devices (tablets, up to 768px) */
+@media (max-width: 768px) { 
+    
+    /* Make the indicators larger for easier clicking with fingers/thumb on mobile */
+    
+    #quote-carousel .carousel-indicators {
+        bottom: -20px !important;  
+    }
+    #quote-carousel .carousel-indicators li {
+        display: inline-block;
+        margin: 0px 5px;
+        width: 15px;
+        height: 15px;
+    }
+    #quote-carousel .carousel-indicators li.active {
+        margin: 0px 5px;
+        width: 20px;
+        height: 20px;
+    }
+
+}
+</style>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+</head>
+
+<script>
+$(document).ready(function() {
+  //Set the carousel options
+  $('#quote-carousel').carousel({
+    pause: true,
+    interval: 4000,
+  });
+});
+</script>
+
+<br />
+
+<div class="panels fullwidth">
+<div class="container">
+  <div class='row'>
+    <div class='col-md-offset-2 col-md-8'>
+      <div class="carousel slide" data-ride="carousel" id="quote-carousel">
+        <!-- Bottom Carousel Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#quote-carousel" data-slide-to="0" class="active"></li>
+          <li data-target="#quote-carousel" data-slide-to="1"></li>
+          <li data-target="#quote-carousel" data-slide-to="2"></li>
+        </ol>
+        
+        <!-- Carousel Slides / Quotes -->
+        <div class="carousel-inner">
+        
+          <!-- Quote 1 -->
+          <div class="item active">
+            <blockquote>
+              <div class="row">
+                <div class="col-sm-3 text-center">
+                  <img class="img-circle" src="{% static 'img/peter.PNG' %}" style="width: 100px;height:100px;margin-top:35px;">
+                </div>
+                <div class="col-sm-9">
+				  <h2>
+				  Predicting the future to help improve the present
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+                  <h5>Peter Jupp, Lead Website Developer and Data Analyst</h5>
+                </div>
+              </div>
+            </blockquote>
+          </div>
+          <!-- Quote 2 -->
+          <div class="item">
+            <blockquote>
+              <div class="row">
+                <div class="col-sm-3 text-center">
+                  <img class="img-circle" src="{% static 'img/vishal2.PNG' %}" style="width: 100px;height:100px;margin-top:35px;">
+                </div>
+                <div class="col-sm-9">
+                  
+				  <h2>We can predict rainfall, temperature and even hurricanes, what's stopping us from predicting wildfires as well?</h2>
+                  <h5>Vishal Soomaney, Lead Backend Developer and Senior Data Analyst</h5>
+                </div>
+              </div>
+            </blockquote>
+          </div>
+          <!-- Quote 3 -->
+          <div class="item">
+            <blockquote>
+              <div class="row">
+                <div class="col-sm-3 text-center">
+                  <img class="img-circle" src="{% static 'img/flinn.png' %}" style="width: 100px;height:100px;margin-top:35px;">
+                </div>
+                <div class="col-sm-9">
+				  <h2>
+				  Fires are bad
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+                  <h5>Flinn Dolman, Algorithm Design And Implementation</h5>
+                </div>
+              </div>
+            </blockquote>
+          </div>
+        </div>
+        
+        <!-- Carousel Buttons Next/Prev -->
+        <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
+        <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
+      </div>                          
+    </div>
+  </div>
+</div>
+<p>&nbsp;</p>
+</div>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<div class="embed-responsive embed-responsive-16by9" style="width:95%">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jU9Z5RegmPs"></iframe>
+</div>
+<center>
+<br />
+</div>
+
+<br />
+
+<div class="wrapper">
+
+<div class="col-md-4">
+<div class="panel panel-default">
+<div class="panel-heading" style="background-color:#e2e2ee"> <span class="glyphicon glyphicon-list-alt"></span><b>News</b></div>
+<div class="panel-body">
+<div class="row">
+<div class="col-xs-12">
+<ul class="demo1">
+<li class="news-item">
+<table cellpadding="4">
+<tr>
+<td><img src="{% static 'img/usa.png' %}" width="60" class="img-circle" style="margin-right:10px;" /></td>
+<td><p><b>OREGON, UNITED STATES</b><br /> Wildfires close Pacific Crest Trail at Crater Lake, evacuation warning</p>
+	<p><i><a href="http://www.oregonlive.com/pacific-northwest-news/index.ssf/2017/08/wildfires_close_pacific_crest.html" target="_blank" >OREGONLIVE Article</a> [06/08/17]</i></p></td>
+</tr>
+</table>
+</li>
+<li class="news-item">
+<table cellpadding="4">
+<tr>
+<td><img src="{% static 'img/france2.jpg' %}" width="60" class="img-circle" style="margin-right:10px;" /></td>
+<td><p><b>FRANCE</b><br /> Thousands evacuated after wildfire on France's Mediterranean coast</p>
+	<p><i><a href="https://www.theguardian.com/world/2017/jul/26/france-wildfires-corsica-cote-d-azur-holiday" target="_blank" >Guardian Article</a> [26/07/17]</i></p></td>
+</tr>
+</table>
+</li>
+<li class="news-item">
+<table cellpadding="4">
+<tr>
+<td><img src="{% static 'img/usa.png' %}" width="60" class="img-circle" style="margin-right:10px;" /></td>
+<td><p><b>WASHINGTON, UNITED STATES</b><br /> Wildfire prompts Level 2 evacuation notice in Naches</p>
+	<p><i><a href="http://www.king5.com/news/local/wildfires/wildfire-prompts-level-2-evacuation-notice-in-naches/453702543" target="_blank" >KING5 Article</a> [03/07/17]</i></p></td>
+</tr>
+</table>
+</li>
+<li class="news-item-bottom">
+<table cellpadding="4">
+<tr>
+<td><p>For more wildfire news, <a href="https://www.google.co.uk/search?q=wildfire#q=wildfire&tbm=nws" target="_blank" >click here</a></p></td>
+</tr>
+</table>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="panel panel-default">
+<div class="panel-heading" style="background-color:#e2e2ee"> <span class="glyphicon glyphicon-list-alt"></span><b>Updates</b></div>
+<div class="panel-body">
+<div class="row">
+<div class="col-xs-12">
+<ul class="demo1">
+<li class="news-item">
+<table cellpadding="4">
+<tr>
+<td><img src="{% static 'img/dev3.png' %}" width="60" class="img-circle" style="margin-right:10px;" /></td>
+<td><p><b>Development Updates:</b> Infoboxes are live! Hover over a placemark on the app to see more info!</p>
+    <p><i>[28/07/17]</i></p></td>
+</tr>
+</table>
+</li>
+<li class="news-item">
+<table cellpadding="4">
+<tr>
+<td><img src="{% static 'img/dev3.png' %}" width="60" class="img-circle" style="margin-right:10px;" /></td>
+<td><p><b>Development Updates:</b> Filter system has been added - you can now filter by fire likelihood!</p>
+    <p><i>[21/07/17]</i></p></td>
+</tr>
+</table>
+</li>
+<li class="news-item">
+<table cellpadding="4">
+<tr>
+<td><img src="{% static 'img/dev3.png' %}" width="60" class="img-circle" style="margin-right:10px;" /></td>
+<td><p><b>Development Updates:</b> New UI upgrades include a legend and select a day functions!</p>
+    <p><i>[17/07/17]</i></p></td>
+</tr>
+</table>
+</li>
+<li class="news-item-bottom">
+<table cellpadding="4">
+<tr>
+<td><img src="{% static 'img/media.png' %}" width="60" class="img-circle" style="margin-right:10px;" /></td>
+<td><p><b>Media Updates:</b> AWARE now has a Twitter account. Make sure to follow us!</p>
+	<p><i>[08/07/17]</i></p></td>
+</tr>
+</table>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="panels rightpanel">
+<a class="twitter-timeline" data-height="450px" data-chrome="transparent" data-link-color="#2B7BB9" href="https://twitter.com/wildfire_aware">Tweets by TwitterDev</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
+</div>
+
+<br />
+
+{% endblock %}

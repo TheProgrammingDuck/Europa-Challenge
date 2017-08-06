@@ -1,0 +1,820 @@
+{% extends "WPSsite/header.html" %}
+
+{% block content %}
+<head lang="en">
+	<script src="http://worldwindserver.net/webworldwind/worldwind.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js" type = "text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.css" type="text/css" media="screen"/>
+
+{% load staticfiles %}
+
+	<style>
+	
+	.panels{
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ededf5+0,eeeef5+100 */
+		background: rgb(237,237,245); /* Old browsers */
+		background: -moz-linear-gradient(45deg, rgba(237,237,245,1) 0%, rgba(238,238,245,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededf5', endColorstr='#eeeef5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		border-radius: 5px;
+	}
+	
+	.apppanel{
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f2f2f2+100 */
+		background: #ffffff; /* Old browsers */
+		background: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, #ffffff 0%,#f2f2f2 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, #ffffff 0%,#f2f2f2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 ); /* IE6-9 */
+		border-radius: 5px;
+		margin-left:10px;
+		margin-right:10px;
+		padding: 10px 10px 10px 10px;
+		width:1024px;
+		margin-bottom:5px;
+		margin: 0 auto;
+	}
+	
+	.legend{
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f2f2f2+100 */
+		background: #ffffff; /* Old browsers */
+		background: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, #ffffff 0%,#f2f2f2 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, #ffffff 0%,#f2f2f2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 ); /* IE6-9 */	
+		
+		border-radius: 5px;
+		margin-left:10px;
+		margin-right:10px;
+		padding: 0px 10px 0px 10px;
+		width:1024px;
+		margin: 0 auto;
+	}
+
+	.fullwidth{
+		margin-left:10px;
+		margin-right:10px;
+	}
+	
+	.webworldfull{
+		margin-left:10px;
+		margin-right:10px;
+
+	}
+	
+	.wholeapp{
+		border-radius: 5px;
+		margin-left:10px;
+		margin-right:10px;
+		background-color:#e3e3e3;
+	}
+	
+	#canvasOne{
+		background-image: url("{% static 'img/starry.jpg' %}");
+	}
+	
+	button{
+		height:34px;
+	}
+
+	</style>
+
+</head>
+
+<br />
+
+<div class="wholeapp">
+<div class="webworldfull">
+
+<br />
+
+<div class="apppanel">
+<center>
+<h1 class="display-3"><b>AWARE</b></h1>
+<p>Made possible thanks to NASA WebWorldWind technology</p>
+<p><i>Powered by Dark Sky</i></p>
+<p>What you see below is our app, Wildfire AWARE. Each coloured circle you see is a data point, and the colour and its probability above it represents 
+the likelihood of a wildfire occuring. Currently we are achieving <b>74.8% accuracy</b>! You can use the buttons below to select the day you wish to see data for, and the search bar to search for a specific 
+location, such as San Francisco. Below the app are some filter options, allowing you to only see the places where there is a certain percentage probability 
+of a wildfire occuring. We hope you enjoy using our app, if you have any further questions, don't hesitate to get in contact!</p>
+<center>
+</div>
+
+<br />
+
+<div class="apppanel">
+
+<div style="display:inline-block; padding-right:50px;">
+	<button type="button" id = "button1" class="btn btn-primary btn-md">Today</button>
+	<button type="button" id = "button2" class="btn btn-primary btn-md">Tomorrow</button>
+	<button type="button" id = "button3" class="btn btn-primary btn-md">29th July</button>
+	<button type="button" id = "button4" class="btn btn-primary btn-md">30th July</button>
+	<button type="button" id = "button5" class="btn btn-primary btn-md">31st July</button>
+	<button type="button" id = "button6" class="btn btn-primary btn-md">1st August</button>
+</div>
+
+<div class="input-group" id="searchBox" style="position:absolute; display:inline-block;">
+	<input type="text" class="form-control" placeholder="Location" id="searchText" style="width:475px; left:0%; border: 1px solid black; border-color: #2e6da4;" />
+	<span class="input-group-btn">
+		<button id="searchButton" class="btn btn-primary" type="button">
+			<span class="glyphicon glyphicon-search"></span>
+		</button>
+	</span>
+</div>
+
+
+<p style="line-height:1px;">&nbsp;</p>
+
+<center>
+<!-- Create a canvas for Web World Wind. -->
+<canvas id="canvasOne" width="1000" height="768">
+	Your browser does not support HTML5 Canvas.
+</canvas>
+</center>
+
+
+<center>
+<div style="font-size:18px">
+< 30%: <input type="checkbox" id="check1">
+30-50%: <input type="checkbox" id="check2">
+> 50%: <input type="checkbox" id="check3"></div>
+<p style="line-height:1px;">&nbsp;</p>
+<input type="button" id="btnCheck" class="btn btn-primary btn-md" value = "FILTER" />
+</center>
+</div>
+
+<br />
+
+
+<div class="legend">
+<center>
+<div>
+<p style="display:inline-block;">0%</p>
+<img src="{% static 'img/scale_9.png' %}" style="display:inline-block; margin-top:7px;" />
+<p style="display:inline-block;">100%</p>
+</div>
+</center>
+</div>
+
+<br />
+
+</div>
+
+<script type="text/javascript">document.getElementById('button7').style.visibility = 'hidden';</script>
+
+<script>
+	//on page ready set the dates for the buttons.
+	$(document).ready(function(){
+		var one = new Date();
+		var two = new Date(one.getTime() + (24 * 60 * 60 * 1000));
+		var three = new Date(two.getTime() + (24 * 60 * 60 * 1000));
+		var four = new Date(three.getTime() + (24 * 60 * 60 * 1000));
+		var five = new Date(four.getTime() + (24 * 60 * 60 * 1000));
+		var six = new Date(five.getTime() + (24 * 60 * 60 * 1000));
+		
+		var month = new Array();
+		month[0] = "January";
+		month[1] = "February";
+		month[2] = "March";
+		month[3] = "April";
+		month[4] = "May";
+		month[5] = "June";
+		month[6] = "July";
+		month[7] = "August";
+		month[8] = "September";
+		month[9] = "October";
+		month[10] = "November";
+		month[11] = "December";
+		
+		$("#button1").text("Today");
+		$("#button2").text("Tomorrow");
+		$("#button3").text(three.getDate() + " " + (month[three.getMonth()]).substring(0, 3));
+		$("#button4").text(four.getDate() + " " + (month[four.getMonth()]).substring(0, 3));
+		$("#button5").text(five.getDate() + " " + (month[five.getMonth()]).substring(0, 3));
+		$("#button6").text(six.getDate() + " " + (month[six.getMonth()]).substring(0, 3));
+	});
+	//create a 1 min timer before launching survey pop up  
+	setTimeout(function(){$( document ).ready(function() {
+			$( "#button7" ).trigger( "click" );
+			console.log("Flinn is the best team member.");
+
+		});
+
+	},1000*60);
+</script>
+
+
+<script>
+	//import prerequisite js files.
+	require(['../../static/js/src/WorldWind','../../static/js/LayerManager'], function(ww, LayerManager) {
+
+    // Register an event listener to be called when the page is loaded.
+	    //window.addEventListener("load", eventWindowLoaded, false);
+
+		var wwd = new WorldWind.WorldWindow("canvasOne");
+		var new_layers;
+		
+	    // Define the event listener to initialize Web World Wind.
+	        // Tell World Wind to log only warnings.
+	        WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
+
+	        // Create the World Window.
+	    
+
+	        // Add imagery layers.
+	        var layers = [
+	            {layer: new WorldWind.BMNGLayer(), enabled: true},
+	            {layer: new WorldWind.BMNGLandsatLayer(), enabled: false},
+	            {layer: new WorldWind.BingAerialWithLabelsLayer(null), enabled: true},
+	            {layer: new WorldWind.CompassLayer(), enabled: true},
+	            {layer: new WorldWind.CoordinatesDisplayLayer(wwd), enabled: true},
+	            {layer: new WorldWind.ViewControlsLayer(wwd), enabled: true},
+				{layer: new WorldWind.AtmosphereLayer(), enabled:true}
+				];
+
+			var annotationsLayer = new WorldWind.RenderableLayer("Annotations");
+			//var annotationController = new AnnotationController(wwd);	
+
+	        for (var l = 0; l < layers.length; l++) {
+	            layers[l].layer.enabled = layers[l].enabled;
+	            wwd.addLayer(layers[l].layer);
+	        }
+	        //dont really need this. Kept it in for easy switching of annotation colour.
+	        var backgroundColors = [
+            WorldWind.Color.RED,
+            WorldWind.Color.GREEN,
+            WorldWind.Color.MAGENTA,
+            WorldWind.Color.BLUE,
+            WorldWind.Color.DARK_GRAY,
+            WorldWind.Color.BLACK,
+            WorldWind.Color.BLACK,
+            WorldWind.Color.RED,
+            WorldWind.Color.BLACK,
+            WorldWind.Color.BLACK,
+            WorldWind.Color.BLACK];
+			
+
+
+			var placemark,
+				placemarkAttributes = new WorldWind.PlacemarkAttributes(null),
+				highlightAttributes,
+				placemarkLayer1 = new WorldWind.RenderableLayer("Placemarks"),
+				placemarkLayer2 = new WorldWind.RenderableLayer("Placemarks"),
+				placemarkLayer3 = new WorldWind.RenderableLayer("Placemarks"),
+				placemarkLayer4 = new WorldWind.RenderableLayer("Placemarks"),
+				placemarkLayer5 = new WorldWind.RenderableLayer("Placemarks"),
+				placemarkLayer6 = new WorldWind.RenderableLayer("Placemarks"),
+				latitude,
+				longitude;
+
+			// Set up the common placemark attributes.
+			placemarkAttributes.imageScale = 1;
+			placemarkAttributes.imageOffset = new WorldWind.Offset(
+				WorldWind.OFFSET_FRACTION, 0.5,
+				WorldWind.OFFSET_FRACTION, 0.5);
+			placemarkAttributes.imageColor = WorldWind.Color.WHITE;
+			//variables for placemark classification.
+			var low = [];
+			var mid = [];
+			var high = [];
+			var placemarks = [];
+			var Objs = [];
+			var probabilities = [];
+			//Django cycle handles placemark generation and rendering.		
+			{% for key, value in my_dict.items %}
+				//probs is an array of svm predictions.
+
+				var probs = ['{{value.1}}','{{value.2}}','{{value.3}}','{{value.4}}','{{value.5}}','{{value.6}}'];
+				var values = []
+				//give a colour to a placemark based upon its predicted probability.
+				for (var y = 0; y < probs.length; y=y+1){
+					if(probs[y] < 0.20){
+						values.push('rgba(34, 139, 34, 0)');
+					}
+					else if(probs[y] > 0.19 && probs[y] < 0.3){
+						values.push('rgb(255, 214, 51)');
+					}
+					else if(probs[y] > 0.29 && probs[y] < 0.4){
+						values.push('rgb(255, 167, 0)');
+					}
+					else if(probs[y] > 0.39 && probs[y] < 0.5){
+						values.push('rgb(255, 131, 0)');
+					}
+					else if(probs[y] > 0.49 && probs[y] < 0.6){
+						values.push('rgb(255, 84, 0)');
+					}
+					else if(probs[y] > 0.59 && probs[y] < 0.7){
+						values.push('rgb(255, 42, 0)');
+					}
+					else if(probs[y] > 0.69 && probs[y] < 0.8){
+						values.push('rgb(230, 0, 0)');
+					}		
+					else if(probs[y] > 0.79 && probs[y] < 0.9){
+						values.push('rgb(26, 0, 0)');
+					}							
+					else{
+						values.push('rgb(0, 0, 0)');
+					}
+					
+				}
+				
+				for (var x = 0; x < values.length; x=x+1) {
+					var canvas = document.createElement("canvas"),
+						ctx2d = canvas.getContext("2d"),
+						size = 64, c = size / 2  - 0.5, innerRadius = 2, outerRadius = 7;
+
+					canvas.width = size;
+					canvas.height = size;
+
+					// Create the custom image for the placemark.
+
+
+					var gradient = ctx2d.createRadialGradient(c, c, innerRadius, c, c, outerRadius);
+					gradient.addColorStop(0, values[x]);		
+
+					ctx2d.fillStyle = gradient;
+					ctx2d.arc(c, c, outerRadius, 0, 2 * Math.PI, false);
+					ctx2d.fill();
+
+
+					// Create the placemark.
+					placemark = new WorldWind.Placemark(new WorldWind.Position({{key.2}}{{key.3}}{{key.4}}{{key.5}}{{key.6}}{{key.7}}{{key.8}},{{key.13}}{{key.14}}{{key.15}}{{key.16}}{{key.17}}{{key.18}}{{key.19}}{{key.20}}{{key.21}}, 1e2), false, null);
+					placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+					//define how we wish annotations to appear.
+					annotationAttributes = new WorldWind.AnnotationAttributes(null);
+            		annotationAttributes.cornerRadius = 14;
+            		annotationAttributes.backgroundColor = backgroundColors[4];
+            		annotationAttributes.textColor = new WorldWind.Color(1, 1, 1, 1);
+            		annotationAttributes.drawLeader = true;
+            		annotationAttributes.leaderGapWidth = 40;
+            		annotationAttributes.leaderGapHeight = 30;
+            		annotationAttributes.opacity = 1;
+            		annotationAttributes.scale = 1;
+            		annotationAttributes.width = 200;
+            		annotationAttributes.height = 150;
+            		annotationAttributes.textAttributes.color = WorldWind.Color.WHITE;
+            		annotationAttributes.insets = new WorldWind.Insets(10, 10, 10, 10);
+            		//annotation @ placemark location
+            		annotation = new WorldWind.Annotation(new WorldWind.Position({{key.2}}{{key.3}}{{key.4}}{{key.5}}{{key.6}}{{key.7}}{{key.8}},{{key.13}}{{key.14}}{{key.15}}{{key.16}}{{key.17}}{{key.18}}{{key.19}}{{key.20}}{{key.21}}, 1e2), annotationAttributes);
+            		
+            		annotation.enabled = false;
+            		//var counter = {{forloop.counter0}}
+            		{% autoescape off %}
+            		annotation.label = "Lat: "+ {{key.2}}{{key.3}}{{key.4}}{{key.5}}{{key.6}}{{key.7}}{{key.8}} + "\nLong: " + {{key.13}}{{key.14}}{{key.15}}{{key.16}}{{key.17}}{{key.18}}{{key.19}}{{key.20}}{{key.21}} + '\n Probability of fire: ' + ((parseFloat(probs[x])*100).toFixed(1)).toString() + "%" + '\n\nNearest Fire Station: ' + {{value.0}}; //ADD MYDICT LOCATION REF HERE
+          		    {% endautoescape %}
+          		    
+					placemarks.push(placemark);
+					probabilities.push(((parseFloat(probs[x])*100).toFixed(1)).toString());
+
+					//generate placemark labels that give placemark probs and classify placemarks based on probs
+					if (parseFloat(probs[x]) < 0.2){
+						console.log("");
+					}
+					else{
+						placemark.label = ((parseFloat(probs[x])*100).toFixed(1)).toString() + "%";
+
+						}
+					
+					if (probs[x] < 0.3){
+
+						placemark.enabled =false;
+
+						low.push(placemark);
+					 }
+
+					else if(probs[x] > 0.3 && probs[x] < 0.5 ){
+
+						placemark.enabled = false;
+
+						mid.push(placemark);
+
+
+					 }
+
+					 else{
+					 	placemark.enabled = false;
+
+					 	high.push(placemark);
+					 	placemark.enabled = false;
+
+
+					 }
+
+					
+
+
+					
+					// Create the placemark attributes for the placemark.
+					placemarkAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+					// Wrap the canvas created above in an ImageSource object to specify it as the placemark image source.
+					placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
+					placemark.attributes = placemarkAttributes;
+
+					// Create the highlight attributes for this placemark. Note that the normal attributes are specified as
+					// the default highlight attributes so that all properties are identical except the image scale. You could
+					// instead vary the color, image, or other property to control the highlight representation.
+					highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+					highlightAttributes.imageScale = 1.2;
+					placemark.highlightAttributes = highlightAttributes;
+
+					//create an object that we will use for associating annotations with placemarks. We need this later for picking.
+					var Obj = new Object();  
+					Obj.placemark = placemark;  
+					Obj.annotation = annotation;  
+
+					Obj.getPlacemark = function () {  
+        				return this.placemark;  
+    				};
+
+    				Obj.getAnnotation = function () {  
+        				return this.annotation;  
+    				};
+
+    				// if all the objects are in an array we can iterate through them easily.
+    				Objs.push(Obj)
+
+
+					// Add the placemark to the layer.
+					
+					if(x==0){
+						placemarkLayer1.addRenderable(placemark);
+					}
+					else if(x==1){
+						placemarkLayer2.addRenderable(placemark);
+					}
+					else if(x==2){
+						placemarkLayer3.addRenderable(placemark);
+					}
+					else if(x==3){
+						placemarkLayer4.addRenderable(placemark);
+					}
+					else if(x==4){
+						placemarkLayer5.addRenderable(placemark);
+					}
+					else if(x==5){
+						placemarkLayer6.addRenderable(placemark);
+					}
+					else{
+						console.log("ERROR");
+					}
+
+					annotationsLayer.addRenderable(annotation);
+				}
+				
+			
+			
+			{% endfor %}
+
+			new_layers = [placemarkLayer1,placemarkLayer2,placemarkLayer3,placemarkLayer4,placemarkLayer5,placemarkLayer6];
+			wwd.addLayer(new_layers[0]);
+			wwd.addLayer(annotationsLayer);
+			//Objs[0].getAnnotation().enabled = true;
+
+			var highlightedItems = [];
+			var layerManger = new LayerManager(wwd);
+
+	        //Reveal all placemarks generated
+	        uncheckbox();
+	        //Activate highlight observation.
+	        highlight();
+
+	        //On button click show different day.
+			$( "#button1" ).click(function() {
+  				dayLoaded(0)
+			});
+			$( "#button2" ).click(function() {
+  				dayLoaded(1)
+			});
+			$( "#button3" ).click(function() {
+  				dayLoaded(2)
+			});
+			$( "#button4" ).click(function() {
+  				dayLoaded(3)
+			});
+			$( "#button5" ).click(function() {
+  				dayLoaded(4)
+			});
+			$( "#button6" ).click(function() {
+  				dayLoaded(5)
+			});
+
+			//Determines which checkboxes were ticked and decides which placemarks to make invisible.
+			$(function () {
+				$("#btnCheck").click(function () {
+	            	var isChecked1 = $("#check1").is(":checked");
+	            	var isChecked2 = $("#check2").is(":checked");
+	            	var isChecked3 = $("#check3").is(":checked");
+	            	
+	            	if(isChecked1 && isChecked2 && isChecked3){
+
+	            		uncheckbox();
+	            	}
+	            	else if (isChecked1) {
+
+	            		if(isChecked2){
+
+	            			checkboxes(high);
+	            		}
+	            		else if(isChecked3){
+
+	            			checkboxes(mid);
+	            		}
+	            		else{
+	            			checkbox(mid,high);
+
+	            		}
+	                } 
+	            	else if (isChecked2){
+
+	            		if(isChecked1){
+
+	            			checkboxes(high);
+	            		}
+	            		else if(isChecked3){
+
+	            			checkboxes(low);
+	            		}
+	            		else{
+	            			checkbox(low,high);
+	            		}
+	                
+	            	}
+
+	            	else if(isChecked3){
+
+	            		if(isChecked1){
+
+	            			checkboxes(mid);
+	            		}
+
+	            		else if(isChecked2){
+
+
+	            			checkboxes(low);
+	            		}
+
+	            		else{
+
+	            			checkbox(low,mid);
+
+	            		}
+
+	            	}
+
+	            	else{
+
+	            		uncheckbox();
+	            	}
+
+	            });
+			});	
+			//generates survey popup using an Iframe in a fancybox.
+			$("#button7").click (function () {
+				$("#various3").fancybox({
+				                'width'             : '75%',
+				                'height'            : '75%',
+				                'autoScale'         : false,
+				                'transitionIn'      : 'none',
+				                'transitionOut'     : 'none',
+				                'type'              : 'iframe'
+				            });
+
+				} );
+
+		
+
+
+		
+		//makes two classes of placemarks invisible
+		function checkbox(option1,option2){
+
+			uncheckbox();
+
+
+
+			for(var i = 0; i < option1.length-1; i++){
+
+
+
+				option1[i].enabled = false;
+
+
+
+			}
+
+			for(var i = 0; i < option2.length-1; i++){
+
+
+
+				option2[i].enabled = false;
+
+
+
+			}
+
+
+		}
+		//Makes a class of placemarks invisible. 
+		function checkboxes(option){
+
+			uncheckbox();
+
+			for(var i = 0; i < option.length-1; i++){
+
+
+
+				option[i].enabled = false;
+
+
+
+			}
+
+
+
+		}	
+
+		//A placemark reset. It makes all placemarks visible.
+		function uncheckbox(){
+
+
+
+			for(var i = 0; i < low.length-1; i++){
+
+
+
+				low[i].enabled = true;
+
+
+
+			}
+
+			for(var i = 0; i < mid.length-1; i++){
+
+
+
+				mid[i].enabled = true;
+
+
+
+			}
+
+			for(var i = 0; i < high.length-1; i++){
+
+
+
+				high[i].enabled = true;
+
+
+
+			}
+
+
+		}
+
+		function highlight(){
+			wwd.addEventListener("mousemove", handlePick);
+			
+		}
+		//var oldlabel = "placeholder"; 
+		function handlePick(o) {
+                // the mouse location.
+                var x = o.clientX,
+                    y = o.clientY;
+       
+                var redrawRequired = highlightedItems.length > 0; // must redraw if we de-highlight previous shapes
+
+                // De-highlight any previously highlighted shapes. Reset the label back to its original value.
+                for (var h = 0; h < highlightedItems.length; h++) {
+                	for (var i = 0; i < Objs.length; i++){
+                		
+                		if(parseFloat(probabilities[i]) > 20 ){
+                			placemarks[i].label = probabilities[i] + "%";
+                		}
+                	}
+                    highlightedItems[h].highlighted = false;
+                    //make annotation invisible
+               		highlightedAnnotations[h].enabled = false;
+                    //highlightedItems[h].label = oldlabel;
+                    
+                }
+                highlightedItems = [];
+                highlightedAnnotations = [];
+
+                // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
+                // relative to the upper left corner of the canvas rather than the upper left corner of the page.
+                var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
+                if (pickList.objects.length > 0) {
+                    redrawRequired = true;
+                }
+
+                // Highlight the items picked by simply setting their highlight flag to true. 
+                if (pickList.objects.length > 0) {
+                    for (var p = 0; p < pickList.objects.length; p++) {
+                        if (!pickList.objects[p].isTerrain) {
+                            //iterate through our list of objects that associate placemarks and annotations 
+                            for (var i = 0; i < Objs.length; i++){
+                            	//temporarily scrap labels so they dont appear over the annotations
+                            	placemarks[i].label = "";
+                            	//this if statement tests which highlighted placemark is part of the object that associates placemarks and annotations 
+                            	if(Object.is(pickList.objects[p].userObject,Objs[i].getPlacemark())){
+                            		//if highlightedplacemark is part of object then make the associated annotation visible.
+                            		Objs[i].getAnnotation().enabled = true;
+                            		highlightedAnnotations.push(Objs[i].getAnnotation());
+                            	}
+                            }
+
+                            pickList.objects[p].userObject.highlighted = true;
+                            //oldlabel = pickList.objects[p].userObject.label;
+                            //pickList.objects[p].userObject.label = ""
+                            //pickList.objects[p].userObject.label = "Lat:"  + wwd.navigator.lookAtLocation.latitude.toPrecision(7).toString() + "\n Long:" + wwd.navigator.lookAtLocation.longitude.toPrecision(7).toString();
+
+                          
+                            
+
+                            // Keep track of highlighted items in order to de-highlight them later.
+                            highlightedItems.push(pickList.objects[p].userObject);
+                        }
+                    }
+                }
+
+                // Update the window if we changed anything.
+                if (redrawRequired) {
+                    wwd.redraw(); // redraw to make the highlighting changes take effect on the screen
+                }
+            }	
+		//Adds and removes placemark layers depending on which button the user has clicked.			
+		function dayLoaded(day) {
+			console.log("Nothin to see here, just some good ol' log!");
+				//remove all placemarks to stop duplicate layers from being added. 
+				wwd.removeLayer(new_layers[0]);
+				wwd.removeLayer(new_layers[1]);
+				wwd.removeLayer(new_layers[2]);
+				wwd.removeLayer(new_layers[3]);
+				wwd.removeLayer(new_layers[4]);
+				wwd.removeLayer(new_layers[5]);
+				wwd.removeLayer(annotationsLayer);
+		
+			if(day==0){
+				wwd.addLayer(new_layers[0]);
+				wwd.removeLayer(new_layers[1]);
+				wwd.removeLayer(new_layers[2]);
+				wwd.removeLayer(new_layers[3]);
+				wwd.removeLayer(new_layers[4]);
+				wwd.removeLayer(new_layers[5]);
+				wwd.addLayer(annotationsLayer);
+			}
+			else if(day==1){
+				wwd.removeLayer(new_layers[0]);
+				wwd.addLayer(new_layers[1]);
+				wwd.removeLayer(new_layers[2]);
+				wwd.removeLayer(new_layers[3]);
+				wwd.removeLayer(new_layers[4]);
+				wwd.removeLayer(new_layers[5]);
+				wwd.addLayer(annotationsLayer);
+			}
+			else if(day==2){
+				wwd.removeLayer(new_layers[0]);
+				wwd.removeLayer(new_layers[1]);
+				wwd.addLayer(new_layers[2]);
+				wwd.removeLayer(new_layers[3]);
+				wwd.removeLayer(new_layers[4]);
+				wwd.removeLayer(new_layers[5]);
+				wwd.addLayer(annotationsLayer);
+			}
+			else if(day==3){
+				wwd.removeLayer(new_layers[0]);
+				wwd.removeLayer(new_layers[1]);
+				wwd.removeLayer(new_layers[2]);
+				wwd.addLayer(new_layers[3]);
+				wwd.removeLayer(new_layers[4]);
+				wwd.removeLayer(new_layers[5]);
+				wwd.addLayer(annotationsLayer);
+			}
+			else if(day==4){
+				wwd.removeLayer(new_layers[0]);
+				wwd.removeLayer(new_layers[1]);
+				wwd.removeLayer(new_layers[2]);
+				wwd.removeLayer(new_layers[3]);
+				wwd.addLayer(new_layers[4]);
+				wwd.removeLayer(new_layers[5]);
+				wwd.addLayer(annotationsLayer);
+			}
+			else if(day==5){
+				wwd.removeLayer(new_layers[0]);
+				wwd.removeLayer(new_layers[1]);
+				wwd.removeLayer(new_layers[2]);
+				wwd.removeLayer(new_layers[3]);
+				wwd.removeLayer(new_layers[4]);
+				wwd.addLayer(new_layers[5]);
+				wwd.addLayer(annotationsLayer);
+			}
+			else{
+				console.log("ERROR");
+			}
+		}
+	});	
+</script>
+
+{% endblock %}

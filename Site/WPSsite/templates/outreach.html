@@ -1,0 +1,214 @@
+{% extends "WPSsite/header.html" %}
+
+{% block content %}
+
+<head lang="en">
+	<style>
+	.panels{
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ededf5+0,eeeef5+100 */
+		background: rgb(237,237,245); /* Old browsers */
+		background: -moz-linear-gradient(45deg, rgba(237,237,245,1) 0%, rgba(238,238,245,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(45deg, rgba(237,237,245,1) 0%,rgba(238,238,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededf5', endColorstr='#eeeef5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		border-radius: 5px;	
+	}
+	
+	.fullwidth{
+		margin-left:10px;
+		margin-right:10px;
+		padding: 0px 100px 0px 100px;		
+	}
+
+	.thirdwidth{
+
+		margin-left:20px;
+		margin-right:20px;
+		padding: 15px 15px 15px 15px;
+	}	
+	
+	.wrapper {
+		display: flex;    
+		width:70%;	
+	}
+
+	.wrapper div {
+		flex-basis: 70%;
+	}
+
+
+	</style>
+{% load staticfiles %}
+</head>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h1 class="display-3">Outreach</h1>
+
+<center>
+<br />
+</div>
+
+<br />
+
+<center>
+<div class="wrapper">
+
+<div class="panels thirdwidth">
+<center>
+<h1 class="display-3" style="padding-bottom:10px;padding-top:10px;color:green;font-size:50px;"><b>3</b></h1>
+<h5>Total number of bugs spotted by users and fixed</h5>
+</div>
+
+<div class="panels thirdwidth">
+<center>
+<h1 class="display-3" style="padding-bottom:10px;padding-top:10px;color:green;font-size:50px;"><b>6</b></h1>
+<h5>Total number of features implemented based on user feedback or requests</h5>
+</center>
+</div>
+
+
+<div class="panels thirdwidth">
+<center>
+<h1 class="display-3" style="padding-bottom:10px;padding-top:10px;color:green;font-size:50px;"><b>11</b></h1>
+<h5>Total number of interactions with high profile organisations</h5>
+</center>
+</div>
+
+</div>
+</center>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">How Feedback Influenced Our App</h3>
+</center>
+<br />
+<p>Through the use of the various outreach strategies discussed further below, we managed to obtain a large amount of useful information that we used 
+to guide our app through development. The following features were added due to responses via our survey, emails and Twitter.</p>
+<p>Search bar: Our excellent navigational tool that allows the user to search for a particular town or city and then zoom to that location was added 
+following feedback. We received a direct request from one of our followers on Twitter that read “I suppose my one quick piece of feedback would be that 
+a search box where you could search for a location, e.g. Los Angeles, would be mightily useful!” We developed it and made it live on the app a short 
+while later.</p>
+<p>Legend: We received numerous requests for more information to be given as to what our colour system. On Twitter we received a direct message from one 
+of our followers that said “Interesting concept! It would be great to have a legend and an explanation of what the user is seeing on the map.”</p>
+<p>Filter: A common problem people had with our app was that it looked “cluttered” with so many data points showing. In order to remedy this issue we 
+decided to implement a filter system, such that the user can only see a subset of all the data points depending on what they want to see. The most useful 
+filter is the >50% filter, which means only the locations where wildfires are most likely will show.</p>
+<p>Probabilities on placemarks: Initially our app just showed the placemarks as colours from yellow to red, representing the probabilities of wildfire 
+likelihood on the given day. We kept the probabilities in the backend. However, we got asked by a survey response to show them, since it would be useful 
+to see exactly what the likelihood is. The exact request was “Show more information regarding probability of wildfire in each location, a percentage 
+probability would be nice.”</p>
+<p>Info panels: We have received some feedback across Twitter and the survey that our app was somewhat confusing to understand exactly what the data meant. 
+We hoped that the legend would be enough, but for some it was not. We figured a good way of giving meaning to the placemarks on WebWorldWind would be to 
+have info panels that display more information about the given location.</p>
+<p>Improved performance: Early versions of the app that we put out for users to give us feedback for had some performance issues, particularly with the 
+loading of data onto WebWorldWind. We realised this to be the case thanks to user feedback across Twitter and our survey.</p>
+
+<br />
+</div>
+
+<br />
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">Who did we contact?</h3>
+</center>
+<br />
+<p>To engage with our potential user community we attempted to make contact with a wide range of different industries that are relevant to our app. 
+   Our main aim was to receive feedback from those in relevant industries, and potentially establish links with wildfire and environmental agencies 
+   around the world which could lead to future cooperation and collaboration. The main areas we wished to establish links with were:</p>
+<br />
+<li style="text-indent:-20px;margin-left: 50px;margin-right:50px;">Environmental agencies and researchers working on relevant projects from around 
+the world, to aid our understanding of the environmental impact of wildfires.</li>
+<br />
+<li style="text-indent:-20px;margin-left: 50px;margin-right:50px;">Computer scientists and software engineers to obtain more technical insights into 
+the modelling of data and user interface of the app.</li>
+<br />
+<li style="text-indent:-20px;margin-left: 50px;margin-right:50px;">Summer camps around the United States, asking them about whether they would consider 
+using an app like ours to help plan future trips, and what features they think the app should have.</li>
+<br />
+<li style="text-indent:-20px;margin-left: 50px;margin-right:50px;">Firefighters, to aid our understanding of the real life impact of our app. It was 
+important that we got in contact with firefighters who deal with wildfires every day to learn what they wanted in our app to consider using it.</li>
+<br /><br />
+
+</div>
+
+<br />
+
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">Methods of Communication</h3>
+</center>
+<br />
+<p>We used three main methods to obtain feedback for our app:</p>
+<br />
+<li style="text-indent:-20px;margin-left: 50px;margin-right:50px;">Firstly we used emails to spread the word of Wildfire AWARE to researchers and 
+professionals in the environmental and wildfire industry, who we believed would give us valuable feedback for our app. In addition to emails, we also 
+used surveys to garner feedback. </li>
+<br />
+<li style="text-indent:-20px;margin-left: 50px;margin-right:50px;">Secondly we used Twitter to have real social interaction with firefighters, wildfire 
+experts, and weather enthusiasts from across the world. We wanted their opinion because these are the types of end users we envisage our app to have, 
+and so their ideas as to how they would like a wildfire prediction app to look like is of vital importance to us.</li>
+<br />
+<li style="text-indent:-20px;margin-left: 50px;margin-right:50px;">We created a short survey that we added to our emails and Twitter interactions in order 
+to gain direct responses to questions we want answers for, the most pertinent being the question on what could be improved. This survey proved to be incredibly 
+useful in moulding our app into what the user community wants, as described at the top of the page.</li>
+<br /><br />
+</div>
+
+<br />
+
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">Interest From Larger Organisations</h3>
+</center>
+<br />
+<p>We have received notable interest from a number of large organisations in the wildfire and environment sector. The interest shown has been significant as it 
+shows the real potential our product has to save lives in the future. Below are the largest organisations to have contacted us, and a little bit about our 
+interactions with them.</p>
+<p><b>Afis</b> (http://www.afis.co.za/) - Provides a satellite-based fire information tool that reports near real-time fire information to users across the globe. We 
+were contacted by one of their research leaders who was very interested in how our app worked and potential future collaboration with us. They specifically asked 
+us if we could set up our app to work in southern Oregon so that our app could be added to their dashboard. Although we didn’t commit to allowing them to use our 
+app on their dashboard yet, we did expand our app slightly northwards into Oregon to reach the areas of interest that Afis wanted covered. They have since inquired 
+into a possible Skype meeting, which we hope will occur soon.</p>
+<p><b>Greenpeace Russia</b> (http://www.greenpeace.org/russia/en/) - a non-governmental environmental organization defending the natural world and promotes peace by 
+investigating, exposing and confronting environmental abuse, and championing solutions. We received interest from a Wildland Fire Project campaigner who wished to talk 
+to us over Skype about possible future co-operation and to see how we could help “strengthen each other”.</p>
+<p><b>EPN564</b> (http://www.epn564.com/) - an emergency and weather photographer based in southern California. We reached out to him on Twitter and he were very 
+interested in our app. We exchanged several emails disussing our app, and he said he would like to use our app for a month or so and provide quality feedback after using 
+our app in realtime. This commitment was very important to us as it is our first real world use of the app. We look forward to hearing his feedback in a month’s time.</p>
+<p>We also received a little interest from the Northern Ireland Environment Agency, weADAPT, SEI International, The NW Fire Blog, patrickryanimages, RedZone, Wildfire Viewer, 
+Fire Adapted Network.</p>
+<br />
+</div>
+
+<br />
+
+
+<div class="panels fullwidth">
+<br />
+<center>
+<h3 class="display-3">Footnote</h3>
+</center>
+<br />
+<p>Disclaimer: The source of outreach data shown can be provided on request. Survey data is anonymous, and therefore will be made public. 
+However, for email and twitter comments, permission from the poster is required before comments can be attributed to specific people or organisations.</p>
+
+<p>Screenshots of interactions with the user community can be found <a href="{% static 'pdf/Outreach.pdf' %}" target="_blank" >HERE</a></p>
+<br />
+</div>
+
+<br />
+
+{% endblock %}

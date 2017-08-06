@@ -1,0 +1,3236 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+<title>SVMDocs</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<style type="text/css">
+@media print {
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutter,
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutters {
+    background-color: #fff;
+  }
+}
+@media not print {
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutter,
+  #texteditor-backdrop #texteditor-container .CodeMirror-gutters {
+    background-color: #fff;
+  }
+}
+@media not print {
+  #texteditor-backdrop #texteditor-container {
+    padding: 0px;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+    box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  }
+}
+/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area .rendered_html table {
+  margin-left: 0;
+  margin-right: 0;
+}
+div.output_area .rendered_html img {
+  margin-left: 0;
+  margin-right: 0;
+}
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+.rendered_html em {
+  font-style: italic;
+}
+.rendered_html strong {
+  font-weight: bold;
+}
+.rendered_html u {
+  text-decoration: underline;
+}
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+.rendered_html h1 {
+  font-size: 185.7%;
+  margin: 1.08em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h2 {
+  font-size: 157.1%;
+  margin: 1.27em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h3 {
+  font-size: 128.6%;
+  margin: 1.55em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h4 {
+  font-size: 100%;
+  margin: 2em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+}
+.rendered_html h5 {
+  font-size: 100%;
+  margin: 2em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+  font-style: italic;
+}
+.rendered_html h6 {
+  font-size: 100%;
+  margin: 2em 0 0 0;
+  font-weight: bold;
+  line-height: 1.0;
+  font-style: italic;
+}
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+.rendered_html ul {
+  list-style: disc;
+  margin: 0em 2em;
+  padding-left: 0px;
+}
+.rendered_html ul ul {
+  list-style: square;
+  margin: 0em 2em;
+}
+.rendered_html ul ul ul {
+  list-style: circle;
+  margin: 0em 2em;
+}
+.rendered_html ol {
+  list-style: decimal;
+  margin: 0em 2em;
+  padding-left: 0px;
+}
+.rendered_html ol ol {
+  list-style: upper-alpha;
+  margin: 0em 2em;
+}
+.rendered_html ol ol ol {
+  list-style: lower-alpha;
+  margin: 0em 2em;
+}
+.rendered_html ol ol ol ol {
+  list-style: lower-roman;
+  margin: 0em 2em;
+}
+.rendered_html ol ol ol ol ol {
+  list-style: decimal;
+  margin: 0em 2em;
+}
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+.rendered_html hr {
+  color: black;
+  background-color: black;
+}
+.rendered_html pre {
+  margin: 1em 2em;
+}
+.rendered_html pre,
+.rendered_html code {
+  border: 0;
+  background-color: #fff;
+  color: #000;
+  font-size: 100%;
+  padding: 0px;
+}
+.rendered_html blockquote {
+  margin: 1em 2em;
+}
+.rendered_html table {
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.rendered_html tr,
+.rendered_html th,
+.rendered_html td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: 1em 2em;
+}
+.rendered_html td,
+.rendered_html th {
+  text-align: left;
+  vertical-align: middle;
+  padding: 4px;
+}
+.rendered_html th {
+  font-weight: bold;
+}
+.rendered_html * + table {
+  margin-top: 1em;
+}
+.rendered_html p {
+  text-align: left;
+}
+.rendered_html * + p {
+  margin-top: 1em;
+}
+.rendered_html img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+.rendered_html svg {
+  max-width: 100%;
+  height: auto;
+}
+.rendered_html img.unconfined,
+.rendered_html svg.unconfined {
+  max-width: none;
+}
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered .rendered_html {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+/*!
+*
+* IPython notebook webapp
+*
+*/
+@media (max-width: 767px) {
+  .notebook_app {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+#ipython-main-app {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  height: 100%;
+}
+div#notebook_panel {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  height: 100%;
+}
+div#notebook {
+  font-size: 14px;
+  line-height: 20px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  width: 100%;
+  /* This spaces the page away from the edge of the notebook area */
+  padding-top: 20px;
+  margin: 0px;
+  outline: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  min-height: 100%;
+}
+@media not print {
+  #notebook-container {
+    padding: 15px;
+    background-color: #fff;
+    min-height: 0;
+    -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+    box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  }
+}
+@media print {
+  #notebook-container {
+    width: 100%;
+  }
+}
+div.ui-widget-content {
+  border: 1px solid #ababab;
+  outline: none;
+}
+pre.dialog {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 0.4em;
+  padding-left: 2em;
+}
+p.dialog {
+  padding: 0.2em;
+}
+/* Word-wrap output correctly.  This is the CSS3 spelling, though Firefox seems
+   to not honor it correctly.  Webkit browsers (Chrome, rekonq, Safari) do.
+ */
+pre,
+code,
+kbd,
+samp {
+  white-space: pre-wrap;
+}
+#fonttest {
+  font-family: monospace;
+}
+p {
+  margin-bottom: 0;
+}
+.end_space {
+  min-height: 100px;
+  transition: height .2s ease;
+}
+.notebook_app > #header {
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+}
+@media not print {
+  .notebook_app {
+    background-color: #EEE;
+  }
+}
+kbd {
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: none;
+  margin: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+/* CSS for the cell toolbar */
+.celltoolbar {
+  border: thin solid #CFCFCF;
+  border-bottom: none;
+  background: #EEE;
+  border-radius: 2px 2px 0px 0px;
+  width: 100%;
+  height: 29px;
+  padding-right: 4px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-pack: end;
+  -moz-box-pack: end;
+  box-pack: end;
+  /* Modern browsers */
+  justify-content: flex-end;
+  display: -webkit-flex;
+}
+@media print {
+  .celltoolbar {
+    display: none;
+  }
+}
+.ctb_hideshow {
+  display: none;
+  vertical-align: bottom;
+}
+/* ctb_show is added to the ctb_hideshow div to show the cell toolbar.
+   Cell toolbars are only shown when the ctb_global_show class is also set.
+*/
+.ctb_global_show .ctb_show.ctb_hideshow {
+  display: block;
+}
+.ctb_global_show .ctb_show + .input_area,
+.ctb_global_show .ctb_show + div.text_cell_input,
+.ctb_global_show .ctb_show ~ div.text_cell_render {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.ctb_global_show .ctb_show ~ div.text_cell_render {
+  border: 1px solid #cfcfcf;
+}
+.celltoolbar {
+  font-size: 87%;
+  padding-top: 3px;
+}
+.celltoolbar select {
+  display: block;
+  width: 100%;
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 1px;
+  width: inherit;
+  font-size: inherit;
+  height: 22px;
+  padding: 0px;
+  display: inline-block;
+}
+.celltoolbar select:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.celltoolbar select::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+.celltoolbar select:-ms-input-placeholder {
+  color: #999;
+}
+.celltoolbar select::-webkit-input-placeholder {
+  color: #999;
+}
+.celltoolbar select::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.celltoolbar select[disabled],
+.celltoolbar select[readonly],
+fieldset[disabled] .celltoolbar select {
+  background-color: #eeeeee;
+  opacity: 1;
+}
+.celltoolbar select[disabled],
+fieldset[disabled] .celltoolbar select {
+  cursor: not-allowed;
+}
+textarea.celltoolbar select {
+  height: auto;
+}
+select.celltoolbar select {
+  height: 30px;
+  line-height: 30px;
+}
+textarea.celltoolbar select,
+select[multiple].celltoolbar select {
+  height: auto;
+}
+.celltoolbar label {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.completions {
+  position: absolute;
+  z-index: 110;
+  overflow: hidden;
+  border: 1px solid #ababab;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 6px 10px -1px #adadad;
+  box-shadow: 0px 6px 10px -1px #adadad;
+  line-height: 1;
+}
+.completions select {
+  background: white;
+  outline: none;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  overflow: auto;
+  font-family: monospace;
+  font-size: 110%;
+  color: #000;
+  width: auto;
+}
+.completions select option.context {
+  color: #286090;
+}
+#kernel_logo_widget {
+  float: right !important;
+  float: right;
+}
+#kernel_logo_widget .current_kernel_logo {
+  display: none;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  width: 32px;
+  height: 32px;
+}
+#menubar {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin-top: 1px;
+}
+#menubar .navbar {
+  border-top: 1px;
+  border-radius: 0px 0px 2px 2px;
+  margin-bottom: 0px;
+}
+#menubar .navbar-toggle {
+  float: left;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: none;
+}
+#menubar .navbar-collapse {
+  clear: left;
+}
+.nav-wrapper {
+  border-bottom: 1px solid #e7e7e7;
+}
+i.menu-icon {
+  padding-top: 4px;
+}
+ul#help_menu li a {
+  overflow: hidden;
+  padding-right: 2.2em;
+}
+ul#help_menu li a i {
+  margin-right: -1.2em;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+}
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+.dropdown-submenu > a:after {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: block;
+  content: "\f0da";
+  float: right;
+  color: #333333;
+  margin-top: 2px;
+  margin-right: -10px;
+}
+.dropdown-submenu > a:after.pull-left {
+  margin-right: .3em;
+}
+.dropdown-submenu > a:after.pull-right {
+  margin-left: .3em;
+}
+.dropdown-submenu:hover > a:after {
+  color: #262626;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+}
+#notification_area {
+  float: right !important;
+  float: right;
+  z-index: 10;
+}
+.indicator_area {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+}
+#kernel_indicator {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+  border-left: 1px solid;
+}
+#kernel_indicator .kernel_indicator_name {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+#modal_indicator {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+}
+#readonly-indicator {
+  float: right !important;
+  float: right;
+  color: #777;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 11px;
+  z-index: 10;
+  text-align: center;
+  width: auto;
+  margin-top: 2px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  display: none;
+}
+.modal_indicator:before {
+  width: 1.28571429em;
+  text-align: center;
+}
+.edit_mode .modal_indicator:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f040";
+}
+.edit_mode .modal_indicator:before.pull-left {
+  margin-right: .3em;
+}
+.edit_mode .modal_indicator:before.pull-right {
+  margin-left: .3em;
+}
+.command_mode .modal_indicator:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: ' ';
+}
+.command_mode .modal_indicator:before.pull-left {
+  margin-right: .3em;
+}
+.command_mode .modal_indicator:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_idle_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f10c";
+}
+.kernel_idle_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_idle_icon:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_busy_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f111";
+}
+.kernel_busy_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_busy_icon:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_dead_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f1e2";
+}
+.kernel_dead_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_dead_icon:before.pull-right {
+  margin-left: .3em;
+}
+.kernel_disconnected_icon:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f127";
+}
+.kernel_disconnected_icon:before.pull-left {
+  margin-right: .3em;
+}
+.kernel_disconnected_icon:before.pull-right {
+  margin-left: .3em;
+}
+.notification_widget {
+  color: #777;
+  z-index: 10;
+  background: rgba(240, 240, 240, 0.5);
+  margin-right: 4px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.notification_widget:focus,
+.notification_widget.focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.notification_widget:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.notification_widget:active,
+.notification_widget.active,
+.open > .dropdown-toggle.notification_widget {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.notification_widget:active:hover,
+.notification_widget.active:hover,
+.open > .dropdown-toggle.notification_widget:hover,
+.notification_widget:active:focus,
+.notification_widget.active:focus,
+.open > .dropdown-toggle.notification_widget:focus,
+.notification_widget:active.focus,
+.notification_widget.active.focus,
+.open > .dropdown-toggle.notification_widget.focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.notification_widget:active,
+.notification_widget.active,
+.open > .dropdown-toggle.notification_widget {
+  background-image: none;
+}
+.notification_widget.disabled:hover,
+.notification_widget[disabled]:hover,
+fieldset[disabled] .notification_widget:hover,
+.notification_widget.disabled:focus,
+.notification_widget[disabled]:focus,
+fieldset[disabled] .notification_widget:focus,
+.notification_widget.disabled.focus,
+.notification_widget[disabled].focus,
+fieldset[disabled] .notification_widget.focus {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.notification_widget .badge {
+  color: #fff;
+  background-color: #333;
+}
+.notification_widget.warning {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.notification_widget.warning:focus,
+.notification_widget.warning.focus {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #985f0d;
+}
+.notification_widget.warning:hover {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.notification_widget.warning:active,
+.notification_widget.warning.active,
+.open > .dropdown-toggle.notification_widget.warning {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.notification_widget.warning:active:hover,
+.notification_widget.warning.active:hover,
+.open > .dropdown-toggle.notification_widget.warning:hover,
+.notification_widget.warning:active:focus,
+.notification_widget.warning.active:focus,
+.open > .dropdown-toggle.notification_widget.warning:focus,
+.notification_widget.warning:active.focus,
+.notification_widget.warning.active.focus,
+.open > .dropdown-toggle.notification_widget.warning.focus {
+  color: #fff;
+  background-color: #d58512;
+  border-color: #985f0d;
+}
+.notification_widget.warning:active,
+.notification_widget.warning.active,
+.open > .dropdown-toggle.notification_widget.warning {
+  background-image: none;
+}
+.notification_widget.warning.disabled:hover,
+.notification_widget.warning[disabled]:hover,
+fieldset[disabled] .notification_widget.warning:hover,
+.notification_widget.warning.disabled:focus,
+.notification_widget.warning[disabled]:focus,
+fieldset[disabled] .notification_widget.warning:focus,
+.notification_widget.warning.disabled.focus,
+.notification_widget.warning[disabled].focus,
+fieldset[disabled] .notification_widget.warning.focus {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.notification_widget.warning .badge {
+  color: #f0ad4e;
+  background-color: #fff;
+}
+.notification_widget.success {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.notification_widget.success:focus,
+.notification_widget.success.focus {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #255625;
+}
+.notification_widget.success:hover {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+.notification_widget.success:active,
+.notification_widget.success.active,
+.open > .dropdown-toggle.notification_widget.success {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+.notification_widget.success:active:hover,
+.notification_widget.success.active:hover,
+.open > .dropdown-toggle.notification_widget.success:hover,
+.notification_widget.success:active:focus,
+.notification_widget.success.active:focus,
+.open > .dropdown-toggle.notification_widget.success:focus,
+.notification_widget.success:active.focus,
+.notification_widget.success.active.focus,
+.open > .dropdown-toggle.notification_widget.success.focus {
+  color: #fff;
+  background-color: #398439;
+  border-color: #255625;
+}
+.notification_widget.success:active,
+.notification_widget.success.active,
+.open > .dropdown-toggle.notification_widget.success {
+  background-image: none;
+}
+.notification_widget.success.disabled:hover,
+.notification_widget.success[disabled]:hover,
+fieldset[disabled] .notification_widget.success:hover,
+.notification_widget.success.disabled:focus,
+.notification_widget.success[disabled]:focus,
+fieldset[disabled] .notification_widget.success:focus,
+.notification_widget.success.disabled.focus,
+.notification_widget.success[disabled].focus,
+fieldset[disabled] .notification_widget.success.focus {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.notification_widget.success .badge {
+  color: #5cb85c;
+  background-color: #fff;
+}
+.notification_widget.info {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.notification_widget.info:focus,
+.notification_widget.info.focus {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #1b6d85;
+}
+.notification_widget.info:hover {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+.notification_widget.info:active,
+.notification_widget.info.active,
+.open > .dropdown-toggle.notification_widget.info {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+.notification_widget.info:active:hover,
+.notification_widget.info.active:hover,
+.open > .dropdown-toggle.notification_widget.info:hover,
+.notification_widget.info:active:focus,
+.notification_widget.info.active:focus,
+.open > .dropdown-toggle.notification_widget.info:focus,
+.notification_widget.info:active.focus,
+.notification_widget.info.active.focus,
+.open > .dropdown-toggle.notification_widget.info.focus {
+  color: #fff;
+  background-color: #269abc;
+  border-color: #1b6d85;
+}
+.notification_widget.info:active,
+.notification_widget.info.active,
+.open > .dropdown-toggle.notification_widget.info {
+  background-image: none;
+}
+.notification_widget.info.disabled:hover,
+.notification_widget.info[disabled]:hover,
+fieldset[disabled] .notification_widget.info:hover,
+.notification_widget.info.disabled:focus,
+.notification_widget.info[disabled]:focus,
+fieldset[disabled] .notification_widget.info:focus,
+.notification_widget.info.disabled.focus,
+.notification_widget.info[disabled].focus,
+fieldset[disabled] .notification_widget.info.focus {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.notification_widget.info .badge {
+  color: #5bc0de;
+  background-color: #fff;
+}
+.notification_widget.danger {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.notification_widget.danger:focus,
+.notification_widget.danger.focus {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #761c19;
+}
+.notification_widget.danger:hover {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+.notification_widget.danger:active,
+.notification_widget.danger.active,
+.open > .dropdown-toggle.notification_widget.danger {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+.notification_widget.danger:active:hover,
+.notification_widget.danger.active:hover,
+.open > .dropdown-toggle.notification_widget.danger:hover,
+.notification_widget.danger:active:focus,
+.notification_widget.danger.active:focus,
+.open > .dropdown-toggle.notification_widget.danger:focus,
+.notification_widget.danger:active.focus,
+.notification_widget.danger.active.focus,
+.open > .dropdown-toggle.notification_widget.danger.focus {
+  color: #fff;
+  background-color: #ac2925;
+  border-color: #761c19;
+}
+.notification_widget.danger:active,
+.notification_widget.danger.active,
+.open > .dropdown-toggle.notification_widget.danger {
+  background-image: none;
+}
+.notification_widget.danger.disabled:hover,
+.notification_widget.danger[disabled]:hover,
+fieldset[disabled] .notification_widget.danger:hover,
+.notification_widget.danger.disabled:focus,
+.notification_widget.danger[disabled]:focus,
+fieldset[disabled] .notification_widget.danger:focus,
+.notification_widget.danger.disabled.focus,
+.notification_widget.danger[disabled].focus,
+fieldset[disabled] .notification_widget.danger.focus {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.notification_widget.danger .badge {
+  color: #d9534f;
+  background-color: #fff;
+}
+div#pager {
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  overflow: hidden;
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  max-height: 50%;
+  padding-top: 8px;
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  /* Display over codemirror */
+  z-index: 100;
+  /* Hack which prevents jquery ui resizable from changing top. */
+  top: auto !important;
+}
+div#pager pre {
+  line-height: 1.21429em;
+  color: #000;
+  background-color: #f7f7f7;
+  padding: 0.4em;
+}
+div#pager #pager-button-area {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+}
+div#pager #pager-contents {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+div#pager #pager-contents #pager-container {
+  position: relative;
+  padding: 15px 0px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+div#pager .ui-resizable-handle {
+  top: 0px;
+  height: 8px;
+  background: #f7f7f7;
+  border-top: 1px solid #cfcfcf;
+  border-bottom: 1px solid #cfcfcf;
+  /* This injects handle bars (a short, wide = symbol) for 
+        the resize handle. */
+}
+div#pager .ui-resizable-handle::after {
+  content: '';
+  top: 2px;
+  left: 50%;
+  height: 3px;
+  width: 30px;
+  margin-left: -15px;
+  position: absolute;
+  border-top: 1px solid #cfcfcf;
+}
+.quickhelp {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  line-height: 1.8em;
+}
+.shortcut_key {
+  display: inline-block;
+  width: 21ex;
+  text-align: right;
+  font-family: monospace;
+}
+.shortcut_descr {
+  display: inline-block;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+span.save_widget {
+  margin-top: 6px;
+}
+span.save_widget span.filename {
+  height: 1em;
+  line-height: 1em;
+  padding: 3px;
+  margin-left: 16px;
+  border: none;
+  font-size: 146.5%;
+  border-radius: 2px;
+}
+span.save_widget span.filename:hover {
+  background-color: #e6e6e6;
+}
+span.checkpoint_status,
+span.autosave_status {
+  font-size: small;
+}
+@media (max-width: 767px) {
+  span.save_widget {
+    font-size: small;
+  }
+  span.checkpoint_status,
+  span.autosave_status {
+    display: none;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  span.checkpoint_status {
+    display: none;
+  }
+  span.autosave_status {
+    font-size: x-small;
+  }
+}
+.toolbar {
+  padding: 0px;
+  margin-left: -5px;
+  margin-top: 2px;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.toolbar select,
+.toolbar label {
+  width: auto;
+  vertical-align: middle;
+  margin-right: 2px;
+  margin-bottom: 0px;
+  display: inline;
+  font-size: 92%;
+  margin-left: 0.3em;
+  margin-right: 0.3em;
+  padding: 0px;
+  padding-top: 3px;
+}
+.toolbar .btn {
+  padding: 2px 8px;
+}
+.toolbar .btn-group {
+  margin-top: 0px;
+  margin-left: 5px;
+}
+#maintoolbar {
+  margin-bottom: -3px;
+  margin-top: -8px;
+  border: 0px;
+  min-height: 27px;
+  margin-left: 0px;
+  padding-top: 11px;
+  padding-bottom: 3px;
+}
+#maintoolbar .navbar-text {
+  float: none;
+  vertical-align: middle;
+  text-align: right;
+  margin-left: 5px;
+  margin-right: 0px;
+  margin-top: 0px;
+}
+.select-xs {
+  height: 24px;
+}
+.pulse,
+.dropdown-menu > li > a.pulse,
+li.pulse > a.dropdown-toggle,
+li.pulse.open > a.dropdown-toggle {
+  background-color: #F37626;
+  color: white;
+}
+/**
+ * Primary styles
+ *
+ * Author: Jupyter Development Team
+ */
+/** WARNING IF YOU ARE EDITTING THIS FILE, if this is a .css file, It has a lot
+ * of chance of beeing generated from the ../less/[samename].less file, you can
+ * try to get back the less file by reverting somme commit in history
+ **/
+/*
+ * We'll try to get something pretty, so we
+ * have some strange css to have the scroll bar on
+ * the left with fix button on the top right of the tooltip
+ */
+@-moz-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-moz-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/*properties of tooltip after "expand"*/
+.bigtooltip {
+  overflow: auto;
+  height: 200px;
+  -webkit-transition-property: height;
+  -webkit-transition-duration: 500ms;
+  -moz-transition-property: height;
+  -moz-transition-duration: 500ms;
+  transition-property: height;
+  transition-duration: 500ms;
+}
+/*properties of tooltip before "expand"*/
+.smalltooltip {
+  -webkit-transition-property: height;
+  -webkit-transition-duration: 500ms;
+  -moz-transition-property: height;
+  -moz-transition-duration: 500ms;
+  transition-property: height;
+  transition-duration: 500ms;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 80px;
+}
+.tooltipbuttons {
+  position: absolute;
+  padding-right: 15px;
+  top: 0px;
+  right: 0px;
+}
+.tooltiptext {
+  /*avoid the button to overlap on some docstring*/
+  padding-right: 30px;
+}
+.ipython_tooltip {
+  max-width: 700px;
+  /*fade-in animation when inserted*/
+  -webkit-animation: fadeOut 400ms;
+  -moz-animation: fadeOut 400ms;
+  animation: fadeOut 400ms;
+  -webkit-animation: fadeIn 400ms;
+  -moz-animation: fadeIn 400ms;
+  animation: fadeIn 400ms;
+  vertical-align: middle;
+  background-color: #f7f7f7;
+  overflow: visible;
+  border: #ababab 1px solid;
+  outline: none;
+  padding: 3px;
+  margin: 0px;
+  padding-left: 7px;
+  font-family: monospace;
+  min-height: 50px;
+  -moz-box-shadow: 0px 6px 10px -1px #adadad;
+  -webkit-box-shadow: 0px 6px 10px -1px #adadad;
+  box-shadow: 0px 6px 10px -1px #adadad;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 1000;
+}
+.ipython_tooltip a {
+  float: right;
+}
+.ipython_tooltip .tooltiptext pre {
+  border: 0;
+  border-radius: 0;
+  font-size: 100%;
+  background-color: #f7f7f7;
+}
+.pretooltiparrow {
+  left: 0px;
+  margin: 0px;
+  top: -16px;
+  width: 40px;
+  height: 16px;
+  overflow: hidden;
+  position: absolute;
+}
+.pretooltiparrow:before {
+  background-color: #f7f7f7;
+  border: 1px #ababab solid;
+  z-index: 11;
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  width: 25px;
+  height: 25px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+ul.typeahead-list i {
+  margin-left: -10px;
+  width: 18px;
+}
+ul.typeahead-list {
+  max-height: 80vh;
+  overflow: auto;
+}
+ul.typeahead-list > li > a {
+  /** Firefox bug **/
+  /* see https://github.com/jupyter/notebook/issues/559 */
+  white-space: normal;
+}
+.cmd-palette .modal-body {
+  padding: 7px;
+}
+.cmd-palette form {
+  background: white;
+}
+.cmd-palette input {
+  outline: none;
+}
+.no-shortcut {
+  display: none;
+}
+.command-shortcut:before {
+  content: "(command)";
+  padding-right: 3px;
+  color: #777777;
+}
+.edit-shortcut:before {
+  content: "(edit)";
+  padding-right: 3px;
+  color: #777777;
+}
+#find-and-replace #replace-preview .match,
+#find-and-replace #replace-preview .insert {
+  background-color: #BBDEFB;
+  border-color: #90CAF9;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0px;
+}
+#find-and-replace #replace-preview .replace .match {
+  background-color: #FFCDD2;
+  border-color: #EF9A9A;
+  border-radius: 0px;
+}
+#find-and-replace #replace-preview .replace .insert {
+  background-color: #C8E6C9;
+  border-color: #A5D6A7;
+  border-radius: 0px;
+}
+#find-and-replace #replace-preview {
+  max-height: 60vh;
+  overflow: auto;
+}
+#find-and-replace #replace-preview pre {
+  padding: 5px 10px;
+}
+.terminal-app {
+  background: #EEE;
+}
+.terminal-app #header {
+  background: #fff;
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+}
+.terminal-app .terminal {
+  width: 100%;
+  float: left;
+  font-family: monospace;
+  color: white;
+  background: black;
+  padding: 0.4em;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.4);
+  box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.4);
+}
+.terminal-app .terminal,
+.terminal-app .terminal dummy-screen {
+  line-height: 1em;
+  font-size: 14px;
+}
+.terminal-app .terminal .xterm-rows {
+  padding: 10px;
+}
+.terminal-app .terminal-cursor {
+  color: black;
+  background: white;
+}
+.terminal-app #terminado-container {
+  margin-top: 20px;
+}
+/*# sourceMappingURL=style.min.css.map */
+    </style>
+<style type="text/css">
+    .highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+    </style>
+<style type="text/css">
+    
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+    </style>
+
+
+<style type="text/css">
+/* Overrides of notebook CSS for static HTML export */
+body {
+  overflow: visible;
+  padding: 8px;
+}
+
+div#notebook {
+  overflow: visible;
+  border-top: none;
+}@media print {
+  div.cell {
+    display: block;
+    page-break-inside: avoid;
+  } 
+  div.output_wrapper { 
+    display: block;
+    page-break-inside: avoid; 
+  }
+  div.output { 
+    display: block;
+    page-break-inside: avoid; 
+  }
+}
+</style>
+
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+<link rel="stylesheet" href="custom.css">
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --></head>
+<body>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-Foundations">The Foundations<a class="anchor-link" href="#The-Foundations">&#194;&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We decided to use the Django web framework for our site. We believed that it would give us the flexibility we needed to perform the backend python operations we needed. If the reader is not familiar with Django we recommend reading its documentation here: <a href="https://docs.djangoproject.com/en/1.11/before">https://docs.djangoproject.com/en/1.11/before</a> continuing on with this document. From here on out we assume a basic level of profiency with the framework as explaining its interacies would distract from the 'meat' of our application. Interpreting predictions produced by our model involved using Pythons 'csv' module and creating a dictionary containing latitude, longitude and fire probability values using a CSV generated by the model named: 'svmoutput.csv' This dictionary could then be handed to app.html via Django. The action takes place in views.py:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">template</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;WPSsite/index.html&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">my_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">station</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">longs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/svmoutput.csv&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">))</span>
+    <span class="n">stations</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/firestations.csv&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">:</span>
+        <span class="n">station</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;{0:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;{0:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">])))</span>
+            
+            <span class="n">perc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">11</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="nb">repr</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">in</span> <span class="n">my_dict</span><span class="p">:</span>
+                <span class="n">my_dict</span><span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perc</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">my_dict</span><span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="n">station</span><span class="p">[</span><span class="n">counter</span><span class="p">]]</span>
+                <span class="n">my_dict</span><span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perc</span><span class="p">)</span>
+                <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+                
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;WPSsite/app.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;my_dict&#39;</span><span class="p">:</span><span class="n">my_dict</span><span class="p">})</span>
+
+<span class="k">def</span> <span class="nf">outreach</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;WPSsite/outreach.html&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">docs</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;WPSsite/docs.html&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">mission</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;WPSsite/mission.html&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">team</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;WPSsite/team.html&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">contact</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;WPSsite/contact.html&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We also appended at the beginning of each location key in the dictionary the nearest firestation, using the 'firestations.csv' file. This was needed to show the nearest firestations on our app's infoboxes. By including 'my_dict' as part of the return call to app.html we can use its contents in app.html via Django. More on that later. Lets now go through app.html.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-App">The App<a class="anchor-link" href="#The-App">&#194;&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">&lt;</span><span class="n">head</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;http://worldwindserver.net/webworldwind/worldwind.min.js&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js&quot;</span> <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.js&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s2">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.css&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span> <span class="n">media</span><span class="o">=</span><span class="s2">&quot;screen&quot;</span><span class="o">/&gt;</span>
+
+
+
+    <span class="o">&lt;</span><span class="n">style</span><span class="o">&gt;</span>
+
+    <span class="o">.</span><span class="n">panels</span><span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Permalink</span> <span class="o">-</span> <span class="n">use</span> <span class="n">to</span> <span class="n">edit</span> <span class="ow">and</span> <span class="n">share</span> <span class="n">this</span> <span class="n">gradient</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">colorzilla</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gradient</span><span class="o">-</span><span class="n">editor</span><span class="o">/</span><span class="c1">#ededf5+0,eeeef5+100 */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="n">rgb</span><span class="p">(</span><span class="mi">237</span><span class="p">,</span><span class="mi">237</span><span class="p">,</span><span class="mi">245</span><span class="p">);</span> <span class="o">/*</span> <span class="n">Old</span> <span class="n">browsers</span> <span class="o">*/</span>
+        <span class="n">background</span><span class="p">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="mi">45</span><span class="n">deg</span><span class="p">,</span> <span class="n">rgba</span><span class="p">(</span><span class="mi">237</span><span class="p">,</span><span class="mi">237</span><span class="p">,</span><span class="mi">245</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="mi">0</span><span class="o">%</span><span class="p">,</span> <span class="n">rgba</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span><span class="mi">238</span><span class="p">,</span><span class="mi">245</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="mi">100</span><span class="o">%</span><span class="p">);</span> <span class="o">/*</span> <span class="n">FF3</span><span class="o">.</span><span class="mi">6</span><span class="o">-</span><span class="mi">15</span> <span class="o">*/</span>
+        <span class="n">background</span><span class="p">:</span> <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="mi">45</span><span class="n">deg</span><span class="p">,</span> <span class="n">rgba</span><span class="p">(</span><span class="mi">237</span><span class="p">,</span><span class="mi">237</span><span class="p">,</span><span class="mi">245</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="mi">0</span><span class="o">%</span><span class="p">,</span><span class="n">rgba</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span><span class="mi">238</span><span class="p">,</span><span class="mi">245</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="mi">100</span><span class="o">%</span><span class="p">);</span> <span class="o">/*</span> <span class="n">Chrome10</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="n">Safari5</span><span class="o">.</span><span class="mi">1</span><span class="o">-</span><span class="mi">6</span> <span class="o">*/</span>
+        <span class="n">background</span><span class="p">:</span> <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="mi">45</span><span class="n">deg</span><span class="p">,</span> <span class="n">rgba</span><span class="p">(</span><span class="mi">237</span><span class="p">,</span><span class="mi">237</span><span class="p">,</span><span class="mi">245</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="mi">0</span><span class="o">%</span><span class="p">,</span><span class="n">rgba</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span><span class="mi">238</span><span class="p">,</span><span class="mi">245</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="mi">100</span><span class="o">%</span><span class="p">);</span> <span class="o">/*</span> <span class="n">W3C</span><span class="p">,</span> <span class="n">IE10</span><span class="o">+</span><span class="p">,</span> <span class="n">FF16</span><span class="o">+</span><span class="p">,</span> <span class="n">Chrome26</span><span class="o">+</span><span class="p">,</span> <span class="n">Opera12</span><span class="o">+</span><span class="p">,</span> <span class="n">Safari7</span><span class="o">+</span> <span class="o">*/</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">progid</span><span class="p">:</span><span class="n">DXImageTransform</span><span class="o">.</span><span class="n">Microsoft</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span> <span class="n">startColorstr</span><span class="o">=</span><span class="s1">&#39;#ededf5&#39;</span><span class="p">,</span> <span class="n">endColorstr</span><span class="o">=</span><span class="s1">&#39;#eeeef5&#39;</span><span class="p">,</span><span class="n">GradientType</span><span class="o">=</span><span class="mi">1</span> <span class="p">);</span> <span class="o">/*</span> <span class="n">IE6</span><span class="o">-</span><span class="mi">9</span> <span class="n">fallback</span> <span class="n">on</span> <span class="n">horizontal</span> <span class="n">gradient</span> <span class="o">*/</span>
+        <span class="n">border</span><span class="o">-</span><span class="n">radius</span><span class="p">:</span> <span class="mi">5</span><span class="n">px</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">.</span><span class="n">apppanel</span><span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Permalink</span> <span class="o">-</span> <span class="n">use</span> <span class="n">to</span> <span class="n">edit</span> <span class="ow">and</span> <span class="n">share</span> <span class="n">this</span> <span class="n">gradient</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">colorzilla</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gradient</span><span class="o">-</span><span class="n">editor</span><span class="o">/</span><span class="c1">#ffffff+0,f2f2f2+100 */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="c1">#ffffff; /* Old browsers */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="c1">#ffffff 0%, #f2f2f2 100%); /* FF3.6-15 */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="c1">#ffffff 0%,#f2f2f2 100%); /* Chrome10-25,Safari5.1-6 */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">to</span> <span class="n">bottom</span><span class="p">,</span> <span class="c1">#ffffff 0%,#f2f2f2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">progid</span><span class="p">:</span><span class="n">DXImageTransform</span><span class="o">.</span><span class="n">Microsoft</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span> <span class="n">startColorstr</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span> <span class="n">endColorstr</span><span class="o">=</span><span class="s1">&#39;#f2f2f2&#39;</span><span class="p">,</span><span class="n">GradientType</span><span class="o">=</span><span class="mi">0</span> <span class="p">);</span> <span class="o">/*</span> <span class="n">IE6</span><span class="o">-</span><span class="mi">9</span> <span class="o">*/</span>
+        <span class="n">border</span><span class="o">-</span><span class="n">radius</span><span class="p">:</span> <span class="mi">5</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">left</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">right</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">padding</span><span class="p">:</span> <span class="mi">10</span><span class="n">px</span> <span class="mi">10</span><span class="n">px</span> <span class="mi">10</span><span class="n">px</span> <span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">width</span><span class="p">:</span><span class="mi">1024</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">bottom</span><span class="p">:</span><span class="mi">5</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="p">:</span> <span class="mi">0</span> <span class="n">auto</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">.</span><span class="n">legend</span><span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Permalink</span> <span class="o">-</span> <span class="n">use</span> <span class="n">to</span> <span class="n">edit</span> <span class="ow">and</span> <span class="n">share</span> <span class="n">this</span> <span class="n">gradient</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">colorzilla</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gradient</span><span class="o">-</span><span class="n">editor</span><span class="o">/</span><span class="c1">#ffffff+0,f2f2f2+100 */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="c1">#ffffff; /* Old browsers */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="c1">#ffffff 0%, #f2f2f2 100%); /* FF3.6-15 */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="c1">#ffffff 0%,#f2f2f2 100%); /* Chrome10-25,Safari5.1-6 */</span>
+        <span class="n">background</span><span class="p">:</span> <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">to</span> <span class="n">bottom</span><span class="p">,</span> <span class="c1">#ffffff 0%,#f2f2f2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">progid</span><span class="p">:</span><span class="n">DXImageTransform</span><span class="o">.</span><span class="n">Microsoft</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span> <span class="n">startColorstr</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span> <span class="n">endColorstr</span><span class="o">=</span><span class="s1">&#39;#f2f2f2&#39;</span><span class="p">,</span><span class="n">GradientType</span><span class="o">=</span><span class="mi">0</span> <span class="p">);</span> <span class="o">/*</span> <span class="n">IE6</span><span class="o">-</span><span class="mi">9</span> <span class="o">*/</span>	
+
+        <span class="n">border</span><span class="o">-</span><span class="n">radius</span><span class="p">:</span> <span class="mi">5</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">left</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">right</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">padding</span><span class="p">:</span> <span class="mi">0</span><span class="n">px</span> <span class="mi">10</span><span class="n">px</span> <span class="mi">0</span><span class="n">px</span> <span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">width</span><span class="p">:</span><span class="mi">1024</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="p">:</span> <span class="mi">0</span> <span class="n">auto</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">.</span><span class="n">fullwidth</span><span class="p">{</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">left</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">right</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">.</span><span class="n">webworldfull</span><span class="p">{</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">left</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">right</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+
+    <span class="p">}</span>
+
+    <span class="o">.</span><span class="n">wholeapp</span><span class="p">{</span>
+        <span class="n">border</span><span class="o">-</span><span class="n">radius</span><span class="p">:</span> <span class="mi">5</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">left</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">margin</span><span class="o">-</span><span class="n">right</span><span class="p">:</span><span class="mi">10</span><span class="n">px</span><span class="p">;</span>
+        <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="p">:</span><span class="c1">#e3e3e3;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">#canvasOne{</span>
+        <span class="n">background</span><span class="o">-</span><span class="n">image</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s2">&quot;{</span><span class="si">% s</span><span class="s2">tatic &#39;img/starry.jpg&#39; %}&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">button</span><span class="p">{</span>
+        <span class="n">height</span><span class="p">:</span><span class="mi">34</span><span class="n">px</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">&lt;/</span><span class="n">style</span><span class="o">&gt;</span>
+
+<span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to make the UI look nice and easy to use, we needed some CSS to do so. We initialised these within the head of the document. A lot of the general website CSS was imported by extending the header.html file, done so through the use of Jinja templating.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, buttons and the search box are defined:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">&lt;</span><span class="n">div</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;display:inline-block; padding-right:50px;&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;button1&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary btn-md&quot;</span><span class="o">&gt;</span><span class="n">Today</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;button2&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary btn-md&quot;</span><span class="o">&gt;</span><span class="n">Tomorrow</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;button3&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary btn-md&quot;</span><span class="o">&gt;</span><span class="mi">29</span><span class="n">th</span> <span class="n">July</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;button4&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary btn-md&quot;</span><span class="o">&gt;</span><span class="mi">30</span><span class="n">th</span> <span class="n">July</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;button5&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary btn-md&quot;</span><span class="o">&gt;</span><span class="mi">31</span><span class="n">st</span> <span class="n">July</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;button6&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary btn-md&quot;</span><span class="o">&gt;</span><span class="mi">1</span><span class="n">st</span> <span class="n">August</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;searchBox&quot;</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;position:absolute; display:inline-block;&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;form-control&quot;</span> <span class="n">placeholder</span><span class="o">=</span><span class="s2">&quot;Location&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;searchText&quot;</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;width:475px; left:0%; border: 1px solid black; border-color: #2e6da4;&quot;</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;input-group-btn&quot;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">button</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;searchButton&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-primary&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;glyphicon glyphicon-search&quot;</span><span class="o">&gt;&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice that the button initialisation text is static. Next comes Javascript that cirmcumvents this.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span>    <span class="o">//</span><span class="n">on</span> <span class="n">page</span> <span class="n">ready</span> <span class="nb">set</span> <span class="n">the</span> <span class="n">dates</span> <span class="k">for</span> <span class="n">the</span> <span class="n">buttons</span><span class="o">.</span>
+    <span class="err">$</span><span class="p">(</span><span class="n">document</span><span class="p">)</span><span class="o">.</span><span class="n">ready</span><span class="p">(</span><span class="n">function</span><span class="p">(){</span>
+        <span class="n">var</span> <span class="n">one</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">();</span>
+        <span class="n">var</span> <span class="n">two</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">(</span><span class="n">one</span><span class="o">.</span><span class="n">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">));</span>
+        <span class="n">var</span> <span class="n">three</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">(</span><span class="n">two</span><span class="o">.</span><span class="n">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">));</span>
+        <span class="n">var</span> <span class="n">four</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">(</span><span class="n">three</span><span class="o">.</span><span class="n">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">));</span>
+        <span class="n">var</span> <span class="n">five</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">(</span><span class="n">four</span><span class="o">.</span><span class="n">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">));</span>
+        <span class="n">var</span> <span class="n">six</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">(</span><span class="n">five</span><span class="o">.</span><span class="n">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">));</span>
+
+        <span class="n">var</span> <span class="n">month</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Array</span><span class="p">();</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;January&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;February&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;March&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;April&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;May&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;June&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;July&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;August&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;September&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;October&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;November&quot;</span><span class="p">;</span>
+        <span class="n">month</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;December&quot;</span><span class="p">;</span>
+
+        <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#button1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;Today&quot;</span><span class="p">);</span>
+        <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#button2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;Tomorrow&quot;</span><span class="p">);</span>
+        <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#button3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">three</span><span class="o">.</span><span class="n">getDate</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="p">(</span><span class="n">month</span><span class="p">[</span><span class="n">three</span><span class="o">.</span><span class="n">getMonth</span><span class="p">()])</span><span class="o">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+        <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#button4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">four</span><span class="o">.</span><span class="n">getDate</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="p">(</span><span class="n">month</span><span class="p">[</span><span class="n">four</span><span class="o">.</span><span class="n">getMonth</span><span class="p">()])</span><span class="o">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+        <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#button5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">five</span><span class="o">.</span><span class="n">getDate</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="p">(</span><span class="n">month</span><span class="p">[</span><span class="n">five</span><span class="o">.</span><span class="n">getMonth</span><span class="p">()])</span><span class="o">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+        <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#button6&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">getDate</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="p">(</span><span class="n">month</span><span class="p">[</span><span class="n">six</span><span class="o">.</span><span class="n">getMonth</span><span class="p">()])</span><span class="o">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+    <span class="p">});</span>
+    <span class="o">//</span><span class="n">create</span> <span class="n">a</span> <span class="mi">1</span> <span class="nb">min</span> <span class="n">timer</span> <span class="n">before</span> <span class="n">launching</span> <span class="n">survey</span> <span class="n">pop</span> <span class="n">up</span>  
+    <span class="n">setTimeout</span><span class="p">(</span><span class="n">function</span><span class="p">(){</span><span class="err">$</span><span class="p">(</span> <span class="n">document</span> <span class="p">)</span><span class="o">.</span><span class="n">ready</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="err">$</span><span class="p">(</span> <span class="s2">&quot;#button7&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">trigger</span><span class="p">(</span> <span class="s2">&quot;click&quot;</span> <span class="p">);</span>
+
+<span class="p">});</span>
+
+    <span class="p">},</span><span class="mi">1000</span><span class="o">*</span><span class="mi">60</span><span class="p">);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Essentially Jquery is being used so that when the page is loaded by a browser the button text is being updated in line with the current date. In addition, A timer is being started with a 60 second countdown that leads to a popup window for our survey. We included this as to ascertain current users experience with our app. The next section contains the bulk of the application. We will go through it step by step.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span>    <span class="o">//</span><span class="kn">import</span> <span class="nn">prerequisite</span> <span class="nn">js</span> <span class="nn">files.</span>
+    <span class="n">require</span><span class="p">([</span><span class="s1">&#39;../../static/js/src/WorldWind&#39;</span><span class="p">,</span><span class="s1">&#39;../../static/js/LayerManager&#39;</span><span class="p">],</span> <span class="n">function</span><span class="p">(</span><span class="n">ww</span><span class="p">,</span> <span class="n">LayerManager</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">var</span> <span class="n">wwd</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">WorldWindow</span><span class="p">(</span><span class="s2">&quot;canvasOne&quot;</span><span class="p">);</span>
+        <span class="n">var</span> <span class="n">new_layers</span><span class="p">;</span>
+
+        <span class="o">//</span> <span class="n">Define</span> <span class="n">the</span> <span class="n">event</span> <span class="n">listener</span> <span class="n">to</span> <span class="n">initialize</span> <span class="n">Web</span> <span class="n">World</span> <span class="n">Wind</span><span class="o">.</span>
+        <span class="o">//</span> <span class="n">Tell</span> <span class="n">World</span> <span class="n">Wind</span> <span class="n">to</span> <span class="n">log</span> <span class="n">only</span> <span class="n">warnings</span><span class="o">.</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Logger</span><span class="o">.</span><span class="n">setLoggingLevel</span><span class="p">(</span><span class="n">WorldWind</span><span class="o">.</span><span class="n">Logger</span><span class="o">.</span><span class="n">LEVEL_WARNING</span><span class="p">);</span>
+
+        <span class="o">//</span> <span class="n">Create</span> <span class="n">the</span> <span class="n">World</span> <span class="n">Window</span><span class="o">.</span>
+        
+
+            <span class="o">//</span> <span class="n">Add</span> <span class="n">imagery</span> <span class="n">layers</span><span class="o">.</span>
+            <span class="n">var</span> <span class="n">layers</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span><span class="n">layer</span><span class="p">:</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">BMNGLayer</span><span class="p">(),</span> <span class="n">enabled</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+                <span class="p">{</span><span class="n">layer</span><span class="p">:</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">BMNGLandsatLayer</span><span class="p">(),</span> <span class="n">enabled</span><span class="p">:</span> <span class="n">false</span><span class="p">},</span>
+                <span class="p">{</span><span class="n">layer</span><span class="p">:</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">BingAerialWithLabelsLayer</span><span class="p">(</span><span class="n">null</span><span class="p">),</span> <span class="n">enabled</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+                <span class="p">{</span><span class="n">layer</span><span class="p">:</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">CompassLayer</span><span class="p">(),</span> <span class="n">enabled</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+                <span class="p">{</span><span class="n">layer</span><span class="p">:</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">CoordinatesDisplayLayer</span><span class="p">(</span><span class="n">wwd</span><span class="p">),</span> <span class="n">enabled</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+                <span class="p">{</span><span class="n">layer</span><span class="p">:</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">ViewControlsLayer</span><span class="p">(</span><span class="n">wwd</span><span class="p">),</span> <span class="n">enabled</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+                <span class="p">{</span><span class="n">layer</span><span class="p">:</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">AtmosphereLayer</span><span class="p">(),</span> <span class="n">enabled</span><span class="p">:</span><span class="n">true</span><span class="p">}</span>
+                <span class="p">];</span>
+
+            <span class="n">var</span> <span class="n">annotationsLayer</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RenderableLayer</span><span class="p">(</span><span class="s2">&quot;Annotations&quot;</span><span class="p">);</span>
+
+            <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">layers</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">l</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">layers</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">layers</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">enabled</span><span class="p">;</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">layers</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">layer</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="o">//</span><span class="n">dont</span> <span class="n">really</span> <span class="n">need</span> <span class="n">this</span><span class="o">.</span> <span class="n">Kept</span> <span class="n">it</span> <span class="ow">in</span> <span class="k">for</span> <span class="n">easy</span> <span class="n">switching</span> <span class="n">of</span> <span class="n">annotation</span> <span class="n">colour</span><span class="o">.</span>
+            <span class="n">var</span> <span class="n">backgroundColors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">RED</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">GREEN</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">MAGENTA</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">BLUE</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">DARK_GRAY</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">RED</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">,</span>
+            <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">];</span>
+            
+
+
+            <span class="n">var</span> <span class="n">placemark</span><span class="p">,</span>
+                <span class="n">placemarkAttributes</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">PlacemarkAttributes</span><span class="p">(</span><span class="n">null</span><span class="p">),</span>
+                <span class="n">highlightAttributes</span><span class="p">,</span>
+                <span class="n">placemarkLayer1</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RenderableLayer</span><span class="p">(</span><span class="s2">&quot;Placemarks&quot;</span><span class="p">),</span>
+                <span class="n">placemarkLayer2</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RenderableLayer</span><span class="p">(</span><span class="s2">&quot;Placemarks&quot;</span><span class="p">),</span>
+                <span class="n">placemarkLayer3</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RenderableLayer</span><span class="p">(</span><span class="s2">&quot;Placemarks&quot;</span><span class="p">),</span>
+                <span class="n">placemarkLayer4</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RenderableLayer</span><span class="p">(</span><span class="s2">&quot;Placemarks&quot;</span><span class="p">),</span>
+                <span class="n">placemarkLayer5</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RenderableLayer</span><span class="p">(</span><span class="s2">&quot;Placemarks&quot;</span><span class="p">),</span>
+                <span class="n">placemarkLayer6</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RenderableLayer</span><span class="p">(</span><span class="s2">&quot;Placemarks&quot;</span><span class="p">),</span>
+                <span class="n">latitude</span><span class="p">,</span>
+                <span class="n">longitude</span><span class="p">;</span>
+
+            <span class="o">//</span> <span class="n">Set</span> <span class="n">up</span> <span class="n">the</span> <span class="n">common</span> <span class="n">placemark</span> <span class="n">attributes</span><span class="o">.</span>
+            <span class="n">placemarkAttributes</span><span class="o">.</span><span class="n">imageScale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">placemarkAttributes</span><span class="o">.</span><span class="n">imageOffset</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Offset</span><span class="p">(</span>
+                <span class="n">WorldWind</span><span class="o">.</span><span class="n">OFFSET_FRACTION</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">WorldWind</span><span class="o">.</span><span class="n">OFFSET_FRACTION</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+            <span class="n">placemarkAttributes</span><span class="o">.</span><span class="n">imageColor</span> <span class="o">=</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">WHITE</span><span class="p">;</span>
+            <span class="o">//</span><span class="n">variables</span> <span class="k">for</span> <span class="n">placemark</span> <span class="n">classification</span><span class="o">.</span>
+            <span class="n">var</span> <span class="n">low</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="n">var</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="n">var</span> <span class="n">high</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="n">var</span> <span class="n">placemarks</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="n">var</span> <span class="n">Objs</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="n">var</span> <span class="n">probabilities</span> <span class="o">=</span> <span class="p">[];</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Requirejs is used to load in external js files from our site js folder. In this case we are using WebWorldWind so we load in its initialisation file: WorldWind.js as well as LayerManager.js. Our LayerManager.js file is similar to the one that can be found at: <a href="https://webworldwind.org/examples/">https://webworldwind.org/examples/</a> but is slightly modified so that when the search bar is used it also zooms into the location rather than just finding it on the globe. The rest of the code is just initialsing the worldwindow, the globe and placemark related features.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">//</span><span class="n">Django</span> <span class="n">cycle</span> <span class="n">handles</span> <span class="n">placemark</span> <span class="n">generation</span> <span class="ow">and</span> <span class="n">rendering</span><span class="o">.</span>		
+            <span class="s2">&quot;{z</span><span class="si">% f</span><span class="s2">or key, value in my_dict.items %z}&quot;</span>
+                <span class="o">//</span><span class="n">probs</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">array</span> <span class="n">of</span> <span class="n">svm</span> <span class="n">predictions</span><span class="o">.</span>			
+                <span class="n">var</span> <span class="n">probs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;{{value.0}}&#39;</span><span class="p">,</span><span class="s1">&#39;{{value.1}}&#39;</span><span class="p">,</span><span class="s1">&#39;{{value.2}}&#39;</span><span class="p">,</span><span class="s1">&#39;{{value.3}}&#39;</span><span class="p">,</span><span class="s1">&#39;{{value.4}}&#39;</span><span class="p">,</span><span class="s1">&#39;{{value.5}}&#39;</span><span class="p">];</span>
+                <span class="n">var</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="o">//</span><span class="n">give</span> <span class="n">a</span> <span class="n">colour</span> <span class="n">to</span> <span class="n">a</span> <span class="n">placemark</span> <span class="n">based</span> <span class="n">upon</span> <span class="n">its</span> <span class="n">predicted</span> <span class="n">probability</span><span class="o">.</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">probs</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.20</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgba(34, 139, 34, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.19</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.3</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(255, 214, 51)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.29</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.4</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(255, 167, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.39</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(255, 131, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.49</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.6</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(255, 84, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.59</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.7</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(255, 42, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.69</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.8</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(230, 0, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.79</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.9</span><span class="p">){</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(26, 0, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span><span class="p">{</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;rgb(0, 0, 0)&#39;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">values</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">var</span> <span class="n">canvas</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;canvas&quot;</span><span class="p">),</span>
+                        <span class="n">ctx2d</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">getContext</span><span class="p">(</span><span class="s2">&quot;2d&quot;</span><span class="p">),</span>
+                        <span class="n">size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">size</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">innerRadius</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">outerRadius</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+
+                    <span class="o">//</span> <span class="n">Create</span> <span class="n">the</span> <span class="n">custom</span> <span class="n">image</span> <span class="k">for</span> <span class="n">the</span> <span class="n">placemark</span><span class="o">.</span>
+
+
+                    <span class="n">var</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">ctx2d</span><span class="o">.</span><span class="n">createRadialGradient</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">innerRadius</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">outerRadius</span><span class="p">);</span>
+                    <span class="n">gradient</span><span class="o">.</span><span class="n">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">]);</span>		
+
+                    <span class="n">ctx2d</span><span class="o">.</span><span class="n">fillStyle</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">;</span>
+                    <span class="n">ctx2d</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">outerRadius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Math</span><span class="o">.</span><span class="n">PI</span><span class="p">,</span> <span class="n">false</span><span class="p">);</span>
+                    <span class="n">ctx2d</span><span class="o">.</span><span class="n">fill</span><span class="p">();</span>
+
+
+                    <span class="o">//</span> <span class="n">Create</span> <span class="n">the</span> <span class="n">placemark</span><span class="o">.</span>
+                    <span class="n">placemark</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Placemark</span><span class="p">(</span><span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s2">&quot;{{key.2}}{{key.3}}{{key.4}}{{key.5}}{{key.6}}{{key.7}}{{key.8}},{{key.13}}{{key.14}}{{key.15}}{{key.16}}{{key.17}}{{key.18}}{{key.19}}{{key.20}}{{key.21}}&quot;</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">),</span> <span class="n">false</span><span class="p">,</span> <span class="n">null</span><span class="p">);</span>
+                    <span class="n">placemark</span><span class="o">.</span><span class="n">altitudeMode</span> <span class="o">=</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">RELATIVE_TO_GROUND</span><span class="p">;</span>
+                    <span class="o">//</span><span class="n">define</span> <span class="n">how</span> <span class="n">we</span> <span class="n">wish</span> <span class="n">annotations</span> <span class="n">to</span> <span class="n">appear</span><span class="o">.</span>
+                    <span class="n">annotationAttributes</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">AnnotationAttributes</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">cornerRadius</span> <span class="o">=</span> <span class="mi">14</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="n">backgroundColors</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">drawLeader</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">leaderGapWidth</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">leaderGapHeight</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">opacity</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">textAttributes</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">WHITE</span><span class="p">;</span>
+                    <span class="n">annotationAttributes</span><span class="o">.</span><span class="n">insets</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Insets</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+                    <span class="o">//</span><span class="n">annotation</span> <span class="err">@</span> <span class="n">placemark</span> <span class="n">location</span>
+                    <span class="n">annotation</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Annotation</span><span class="p">(</span><span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s2">&quot;{{key.2}}{{key.3}}{{key.4}}{{key.5}}{{key.6}}{{key.7}}{{key.8}},{{key.13}}{{key.14}}{{key.15}}{{key.16}}{{key.17}}{{key.18}}{{key.19}}{{key.20}}{{key.21}}&quot;</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">),</span> <span class="n">annotationAttributes</span><span class="p">);</span>
+
+                    <span class="n">annotation</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+               
+                   
+                    <span class="n">annotation</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Lat: &quot;</span><span class="o">+</span> <span class="s2">&quot;{{key.2}}{{key.3}}{{key.4}}{{key.5}}{{key.6}}{{key.7}}{{key.8}}&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Long: &quot;</span> <span class="o">+</span> <span class="s2">&quot;{{key.13}}{{key.14}}{{key.15}}{{key.16}}{{key.17}}{{key.18}}{{key.19}}{{key.20}}{{key.21}}&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Probability of fire: &#39;</span> <span class="o">+</span> <span class="p">((</span><span class="n">parseFloat</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">x</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">toFixed</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Nearest Fire Station: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> 
+                    
+                  
+                    <span class="n">placemarks</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                    <span class="n">probabilities</span><span class="o">.</span><span class="n">push</span><span class="p">(((</span><span class="n">parseFloat</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">x</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">toFixed</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+
+                    <span class="o">//</span><span class="n">generate</span> <span class="n">placemark</span> <span class="n">labels</span> <span class="n">that</span> <span class="n">give</span> <span class="n">placemark</span> <span class="n">probs</span> <span class="ow">and</span> <span class="n">classify</span> <span class="n">placemarks</span> <span class="n">based</span> <span class="n">on</span> <span class="n">probs</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">parseFloat</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">){</span>
+                        <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span><span class="p">{</span>
+                        <span class="n">placemark</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="p">((</span><span class="n">parseFloat</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">x</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">toFixed</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">;</span>
+
+                        <span class="p">}</span>
+                    
+                    <span class="k">if</span> <span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.3</span><span class="p">){</span>
+
+                        <span class="n">placemark</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span><span class="n">false</span><span class="p">;</span>
+
+                        <span class="n">low</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                     <span class="p">}</span>
+
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="o">&amp;&amp;</span> <span class="n">probs</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="p">){</span>
+
+                        <span class="n">placemark</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+
+                        <span class="n">mid</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+
+
+                     <span class="p">}</span>
+
+                     <span class="k">else</span><span class="p">{</span>
+                         <span class="n">placemark</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+
+                         <span class="n">high</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                         <span class="n">placemark</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+
+
+                     <span class="p">}</span>
+
+                    
+
+
+                    
+                    <span class="o">//</span> <span class="n">Create</span> <span class="n">the</span> <span class="n">placemark</span> <span class="n">attributes</span> <span class="k">for</span> <span class="n">the</span> <span class="n">placemark</span><span class="o">.</span>
+                    <span class="n">placemarkAttributes</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">PlacemarkAttributes</span><span class="p">(</span><span class="n">placemarkAttributes</span><span class="p">);</span>
+                    <span class="o">//</span> <span class="n">Wrap</span> <span class="n">the</span> <span class="n">canvas</span> <span class="n">created</span> <span class="n">above</span> <span class="ow">in</span> <span class="n">an</span> <span class="n">ImageSource</span> <span class="nb">object</span> <span class="n">to</span> <span class="n">specify</span> <span class="n">it</span> <span class="k">as</span> <span class="n">the</span> <span class="n">placemark</span> <span class="n">image</span> <span class="n">source</span><span class="o">.</span>
+                    <span class="n">placemarkAttributes</span><span class="o">.</span><span class="n">imageSource</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">ImageSource</span><span class="p">(</span><span class="n">canvas</span><span class="p">);</span>
+                    <span class="n">placemark</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">placemarkAttributes</span><span class="p">;</span>
+
+                    <span class="o">//</span> <span class="n">Create</span> <span class="n">the</span> <span class="n">highlight</span> <span class="n">attributes</span> <span class="k">for</span> <span class="n">this</span> <span class="n">placemark</span><span class="o">.</span> <span class="n">Note</span> <span class="n">that</span> <span class="n">the</span> <span class="n">normal</span> <span class="n">attributes</span> <span class="n">are</span> <span class="n">specified</span> <span class="k">as</span>
+                    <span class="o">//</span> <span class="n">the</span> <span class="n">default</span> <span class="n">highlight</span> <span class="n">attributes</span> <span class="n">so</span> <span class="n">that</span> <span class="nb">all</span> <span class="n">properties</span> <span class="n">are</span> <span class="n">identical</span> <span class="k">except</span> <span class="n">the</span> <span class="n">image</span> <span class="n">scale</span><span class="o">.</span> <span class="n">You</span> <span class="n">could</span>
+                    <span class="o">//</span> <span class="n">instead</span> <span class="n">vary</span> <span class="n">the</span> <span class="n">color</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="ow">or</span> <span class="n">other</span> <span class="nb">property</span> <span class="n">to</span> <span class="n">control</span> <span class="n">the</span> <span class="n">highlight</span> <span class="n">representation</span><span class="o">.</span>
+                    <span class="n">highlightAttributes</span> <span class="o">=</span> <span class="n">new</span> <span class="n">WorldWind</span><span class="o">.</span><span class="n">PlacemarkAttributes</span><span class="p">(</span><span class="n">placemarkAttributes</span><span class="p">);</span>
+                    <span class="n">highlightAttributes</span><span class="o">.</span><span class="n">imageScale</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">;</span>
+                    <span class="n">placemark</span><span class="o">.</span><span class="n">highlightAttributes</span> <span class="o">=</span> <span class="n">highlightAttributes</span><span class="p">;</span>
+
+                    <span class="o">//</span><span class="n">create</span> <span class="n">an</span> <span class="nb">object</span> <span class="n">that</span> <span class="n">we</span> <span class="n">will</span> <span class="n">use</span> <span class="k">for</span> <span class="n">associating</span> <span class="n">annotations</span> <span class="k">with</span> <span class="n">placemarks</span><span class="o">.</span> <span class="n">We</span> <span class="n">need</span> <span class="n">this</span> <span class="n">later</span> <span class="k">for</span> <span class="n">picking</span><span class="o">.</span>
+                    <span class="n">var</span> <span class="n">Obj</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Object</span><span class="p">();</span>  
+                    <span class="n">Obj</span><span class="o">.</span><span class="n">placemark</span> <span class="o">=</span> <span class="n">placemark</span><span class="p">;</span>  
+                    <span class="n">Obj</span><span class="o">.</span><span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">;</span>  
+
+                    <span class="n">Obj</span><span class="o">.</span><span class="n">getPlacemark</span> <span class="o">=</span> <span class="n">function</span> <span class="p">()</span> <span class="p">{</span>  
+                        <span class="k">return</span> <span class="n">this</span><span class="o">.</span><span class="n">placemark</span><span class="p">;</span>  
+                    <span class="p">};</span>
+
+                    <span class="n">Obj</span><span class="o">.</span><span class="n">getAnnotation</span> <span class="o">=</span> <span class="n">function</span> <span class="p">()</span> <span class="p">{</span>  
+                        <span class="k">return</span> <span class="n">this</span><span class="o">.</span><span class="n">annotation</span><span class="p">;</span>  
+                    <span class="p">};</span>
+
+                    <span class="o">//</span> <span class="k">if</span> <span class="nb">all</span> <span class="n">the</span> <span class="n">objects</span> <span class="n">are</span> <span class="ow">in</span> <span class="n">an</span> <span class="n">array</span> <span class="n">we</span> <span class="n">can</span> <span class="n">iterate</span> <span class="n">through</span> <span class="n">them</span> <span class="n">easily</span><span class="o">.</span>
+                    <span class="n">Objs</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">Obj</span><span class="p">)</span>
+
+
+                    <span class="o">//</span> <span class="n">Add</span> <span class="n">the</span> <span class="n">placemark</span> <span class="n">to</span> <span class="n">the</span> <span class="n">layer</span><span class="o">.</span>
+                    
+                    <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+                        <span class="n">placemarkLayer1</span><span class="o">.</span><span class="n">addRenderable</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+                        <span class="n">placemarkLayer2</span><span class="o">.</span><span class="n">addRenderable</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
+                        <span class="n">placemarkLayer3</span><span class="o">.</span><span class="n">addRenderable</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">3</span><span class="p">){</span>
+                        <span class="n">placemarkLayer4</span><span class="o">.</span><span class="n">addRenderable</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">4</span><span class="p">){</span>
+                        <span class="n">placemarkLayer5</span><span class="o">.</span><span class="n">addRenderable</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">5</span><span class="p">){</span>
+                        <span class="n">placemarkLayer6</span><span class="o">.</span><span class="n">addRenderable</span><span class="p">(</span><span class="n">placemark</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span><span class="p">{</span>
+                        <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">);</span>
+                    <span class="p">}</span>
+
+                    <span class="n">annotationsLayer</span><span class="o">.</span><span class="n">addRenderable</span><span class="p">(</span><span class="n">annotation</span><span class="p">);</span>
+                <span class="p">}</span>
+                
+            
+            
+            <span class="s2">&quot;{z</span><span class="si">% e</span><span class="s2">ndfor %z}&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here is where we use the dictionary my_dict we discussed earlier. We use Jinja logic to go through each element of the dictionary, using a for loop. This code creates custom placemarks whose colour is determined by the probability of fire in svmoutput.csv and whose location is determined by the lats and longs in the same file. Then annotations are created and the placemarks are added to layers to be loaded according to which button is pressed by the user.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">new_layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">placemarkLayer1</span><span class="p">,</span><span class="n">placemarkLayer2</span><span class="p">,</span><span class="n">placemarkLayer3</span><span class="p">,</span><span class="n">placemarkLayer4</span><span class="p">,</span><span class="n">placemarkLayer5</span><span class="p">,</span><span class="n">placemarkLayer6</span><span class="p">];</span>
+            <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+            <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+
+            <span class="n">var</span> <span class="n">highlightedItems</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="n">var</span> <span class="n">layerManger</span> <span class="o">=</span> <span class="n">new</span> <span class="n">LayerManager</span><span class="p">(</span><span class="n">wwd</span><span class="p">);</span>
+
+            <span class="o">//</span><span class="n">Reveal</span> <span class="nb">all</span> <span class="n">placemarks</span> <span class="n">generated</span>
+            <span class="n">uncheckbox</span><span class="p">();</span>
+            <span class="o">//</span><span class="n">Activate</span> <span class="n">highlight</span> <span class="n">observation</span><span class="o">.</span>
+            <span class="n">highlight</span><span class="p">();</span>
+
+            <span class="o">//</span><span class="n">On</span> <span class="n">button</span> <span class="n">click</span> <span class="n">show</span> <span class="n">different</span> <span class="n">day</span><span class="o">.</span>
+            <span class="err">$</span><span class="p">(</span> <span class="s2">&quot;#button1&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">dayLoaded</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">});</span>
+            <span class="err">$</span><span class="p">(</span> <span class="s2">&quot;#button2&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">dayLoaded</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">});</span>
+            <span class="err">$</span><span class="p">(</span> <span class="s2">&quot;#button3&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">dayLoaded</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="p">});</span>
+            <span class="err">$</span><span class="p">(</span> <span class="s2">&quot;#button4&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">dayLoaded</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="p">});</span>
+            <span class="err">$</span><span class="p">(</span> <span class="s2">&quot;#button5&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">dayLoaded</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="p">});</span>
+            <span class="err">$</span><span class="p">(</span> <span class="s2">&quot;#button6&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">dayLoaded</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="p">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above code does much of the prepartion work for the viewer to use the app. It adds the generated layers to the globe and enables the placemarks to be seen (uncheckbox()). Highlighting functionality such as annotation box appearance is then enabled through highlight() and jquery waits to run the dayloaded() function which controls which placemark layer (each corresponding to a day) appears according to a button push. The next section of code controls placemark filtering based on checkboxes. It is omitted here to keep this documentation from becoming to long but if the reader is interested they can check out app.html in our source code. We will move onto the highlight() function and its dependencies.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">function</span> <span class="n">highlight</span><span class="p">(){</span>
+            <span class="n">wwd</span><span class="o">.</span><span class="n">addEventListener</span><span class="p">(</span><span class="s2">&quot;mousemove&quot;</span><span class="p">,</span> <span class="n">handlePick</span><span class="p">);</span>
+            
+        <span class="p">}</span>
+ 
+        <span class="n">function</span> <span class="n">handlePick</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">//</span> <span class="n">the</span> <span class="n">mouse</span> <span class="n">location</span><span class="o">.</span>
+                <span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">clientX</span><span class="p">,</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">clientY</span><span class="p">;</span>
+       
+                <span class="n">var</span> <span class="n">redrawRequired</span> <span class="o">=</span> <span class="n">highlightedItems</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="o">//</span> <span class="n">must</span> <span class="n">redraw</span> <span class="k">if</span> <span class="n">we</span> <span class="n">de</span><span class="o">-</span><span class="n">highlight</span> <span class="n">previous</span> <span class="n">shapes</span>
+
+                <span class="o">//</span> <span class="n">De</span><span class="o">-</span><span class="n">highlight</span> <span class="nb">any</span> <span class="n">previously</span> <span class="n">highlighted</span> <span class="n">shapes</span><span class="o">.</span> <span class="n">Reset</span> <span class="n">the</span> <span class="n">label</span> <span class="n">back</span> <span class="n">to</span> <span class="n">its</span> <span class="n">original</span> <span class="n">value</span><span class="o">.</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="n">highlightedItems</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">h</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">Objs</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                        
+                        <span class="k">if</span><span class="p">(</span><span class="n">parseFloat</span><span class="p">(</span><span class="n">probabilities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="p">){</span>
+                            <span class="n">placemarks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">probabilities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    <span class="n">highlightedItems</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">highlighted</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+                    <span class="o">//</span><span class="n">make</span> <span class="n">annotation</span> <span class="n">invisible</span>
+                    <span class="n">highlightedAnnotations</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+           
+                    
+                <span class="p">}</span>
+                <span class="n">highlightedItems</span> <span class="o">=</span> <span class="p">[];</span>
+                <span class="n">highlightedAnnotations</span> <span class="o">=</span> <span class="p">[];</span>
+
+                <span class="o">//</span> <span class="n">Perform</span> <span class="n">the</span> <span class="n">pick</span><span class="o">.</span> <span class="n">Must</span> <span class="n">first</span> <span class="n">convert</span> <span class="kn">from</span> <span class="nn">window</span> <span class="nn">coordinates</span> <span class="nn">to</span> <span class="nn">canvas</span> <span class="nn">coordinates</span><span class="p">,</span> <span class="n">which</span> <span class="n">are</span>
+                <span class="o">//</span> <span class="n">relative</span> <span class="n">to</span> <span class="n">the</span> <span class="n">upper</span> <span class="n">left</span> <span class="n">corner</span> <span class="n">of</span> <span class="n">the</span> <span class="n">canvas</span> <span class="n">rather</span> <span class="n">than</span> <span class="n">the</span> <span class="n">upper</span> <span class="n">left</span> <span class="n">corner</span> <span class="n">of</span> <span class="n">the</span> <span class="n">page</span><span class="o">.</span>
+                <span class="n">var</span> <span class="n">pickList</span> <span class="o">=</span> <span class="n">wwd</span><span class="o">.</span><span class="n">pick</span><span class="p">(</span><span class="n">wwd</span><span class="o">.</span><span class="n">canvasCoordinates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">));</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">pickList</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">redrawRequired</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="o">//</span> <span class="n">Highlight</span> <span class="n">the</span> <span class="n">items</span> <span class="n">picked</span> <span class="n">by</span> <span class="n">simply</span> <span class="n">setting</span> <span class="n">their</span> <span class="n">highlight</span> <span class="n">flag</span> <span class="n">to</span> <span class="n">true</span><span class="o">.</span> 
+                <span class="k">if</span> <span class="p">(</span><span class="n">pickList</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">pickList</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">p</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="o">!</span>pickList.objects<span class="o">[</span>p<span class="o">]</span>.isTerrain<span class="o">)</span> <span class="o">{</span>
+                            <span class="o">//</span><span class="n">iterate</span> <span class="n">through</span> <span class="n">our</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">objects</span> <span class="n">that</span> <span class="n">associate</span> <span class="n">placemarks</span> <span class="ow">and</span> <span class="n">annotations</span> 
+                            <span class="k">for</span> <span class="p">(</span><span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">Objs</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                                <span class="o">//</span><span class="n">temporarily</span> <span class="n">scrap</span> <span class="n">labels</span> <span class="n">so</span> <span class="n">they</span> <span class="n">dont</span> <span class="n">appear</span> <span class="n">over</span> <span class="n">the</span> <span class="n">annotations</span>
+                                <span class="n">placemarks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+                                <span class="o">//</span><span class="n">this</span> <span class="k">if</span> <span class="n">statement</span> <span class="n">tests</span> <span class="n">which</span> <span class="n">highlighted</span> <span class="n">placemark</span> <span class="ow">is</span> <span class="n">part</span> <span class="n">of</span> <span class="n">the</span> <span class="nb">object</span> <span class="n">that</span> <span class="n">associates</span> <span class="n">placemarks</span> <span class="ow">and</span> <span class="n">annotations</span> 
+                                <span class="k">if</span><span class="p">(</span><span class="n">Object</span><span class="o">.</span><span class="ow">is</span><span class="p">(</span><span class="n">pickList</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">userObject</span><span class="p">,</span><span class="n">Objs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getPlacemark</span><span class="p">())){</span>
+                                    
+                                    <span class="o">//</span><span class="k">if</span> <span class="n">highlightedplacemark</span> <span class="ow">is</span> <span class="n">part</span> <span class="n">of</span> <span class="nb">object</span> <span class="n">then</span> <span class="n">make</span> <span class="n">the</span> <span class="n">associated</span> <span class="n">annotation</span> <span class="n">visible</span><span class="o">.</span>
+                                    
+                                    <span class="n">Objs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getAnnotation</span><span class="p">()</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+                                    <span class="n">highlightedAnnotations</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">Objs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getAnnotation</span><span class="p">());</span>
+                                <span class="p">}</span>
+                            <span class="p">}</span>
+
+                            <span class="n">pickList</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">userObject</span><span class="o">.</span><span class="n">highlighted</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+                            
+                            
+
+                            <span class="o">//</span> <span class="n">Keep</span> <span class="n">track</span> <span class="n">of</span> <span class="n">highlighted</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">order</span> <span class="n">to</span> <span class="n">de</span><span class="o">-</span><span class="n">highlight</span> <span class="n">them</span> <span class="n">later</span><span class="o">.</span>
+                            <span class="n">highlightedItems</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">pickList</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">userObject</span><span class="p">);</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="o">//</span> <span class="n">Update</span> <span class="n">the</span> <span class="n">window</span> <span class="k">if</span> <span class="n">we</span> <span class="n">changed</span> <span class="n">anything</span><span class="o">.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">redrawRequired</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">wwd</span><span class="o">.</span><span class="n">redraw</span><span class="p">();</span> <span class="o">//</span> <span class="n">redraw</span> <span class="n">to</span> <span class="n">make</span> <span class="n">the</span> <span class="n">highlighting</span> <span class="n">changes</span> <span class="n">take</span> <span class="n">effect</span> <span class="n">on</span> <span class="n">the</span> <span class="n">screen</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The basis for this section is based upon the annotation and picking examples at: <a href="https://webworldwind.org/examples/">https://webworldwind.org/examples/</a>. Essentially what is going on is when a placemark is highlighted its corresponding annotation is enabled. At the same time the labels for every other placemark are set blank so as to ensure the clarity of the annotation. When its time to dehighlight the placemarks the labels are reset back to their initial value. Finally we will look at the dayloaded() function.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">//</span><span class="n">Adds</span> <span class="ow">and</span> <span class="n">removes</span> <span class="n">placemark</span> <span class="n">layers</span> <span class="n">depending</span> <span class="n">on</span> <span class="n">which</span> <span class="n">button</span> <span class="n">the</span> <span class="n">user</span> <span class="n">has</span> <span class="n">clicked</span><span class="o">.</span>			
+        <span class="n">function</span> <span class="n">dayLoaded</span><span class="p">(</span><span class="n">day</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">//</span><span class="n">remove</span> <span class="nb">all</span> <span class="n">placemarks</span> <span class="n">to</span> <span class="n">stop</span> <span class="n">duplicate</span> <span class="n">layers</span> <span class="kn">from</span> <span class="nn">being</span> <span class="nn">added.</span> 
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+        
+            <span class="k">if</span><span class="p">(</span><span class="n">day</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">day</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">day</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">day</span><span class="o">==</span><span class="mi">3</span><span class="p">){</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">day</span><span class="o">==</span><span class="mi">4</span><span class="p">){</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">day</span><span class="o">==</span><span class="mi">5</span><span class="p">){</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">removeLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">new_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+                <span class="n">wwd</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">annotationsLayer</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span><span class="p">{</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>	
+
+
+<span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">center</span><span class="o">&gt;</span>
+<span class="o">&lt;</span> <span class="mi">30</span><span class="o">%</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;check1&quot;</span><span class="o">&gt;</span>
+ <span class="mi">30</span><span class="o">-</span><span class="mi">50</span><span class="o">%</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;check2&quot;</span><span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="mi">50</span><span class="o">%</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;check3&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;btnCheck&quot;</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;Check&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+<span class="n">Swiggity</span> <span class="n">Swoo</span><span class="o">!</span> If you are liking this app and want to <span class="nb">help</span> us out fill in the survey &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://goo.gl/forms/uiuZsFpV8XU2ZiO32&quot;</span> <span class="nv">target</span><span class="o">=</span><span class="s2">&quot;_blank&quot;</span>&gt;here.&lt;/a&gt; Thanks, it means alot!
+<span class="o">&lt;/</span><span class="n">center</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">a</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;various3&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;https://goo.gl/forms/uiuZsFpV8XU2ZiO32&quot;</span><span class="o">&gt;&lt;</span><span class="nb">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;button7&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;button&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;sneaky_button&quot;</span><span class="o">/&gt;&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span><span class="n">document</span><span class="o">.</span><span class="n">getElementById</span><span class="p">(</span><span class="s1">&#39;button7&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">visibility</span> <span class="o">=</span> <span class="s1">&#39;hidden&#39;</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This function is called via button clicks. When that happens any existing placemark layer in the layerlist is removed and a new layer is added accoridng to which button was pressed. The final piece of html after this function are references to the survey that pops up. There is also a hyperlink on the page that takes clickers to the survey and that is implemented here.</p>
+
+</div>
+</div>
+</div>
+    </div>
+  </div>
+</body>
+
+ 
+
+
+</html>

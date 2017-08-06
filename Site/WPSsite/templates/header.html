@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	
+	<title>Wildfire AWARE</title>
+	<link rel='shortcut icon' href="/static/img/favicon.ico" type='image/x-icon' />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<script>
+  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  		ga('create', 'UA-102725392-1', 'auto');
+  		ga('send', 'pageview');
+	</script>
+
+	<style>
+	
+	.headbody{
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e5e5e5+0,bcbcbc+100 */
+		background: #e5e5e5; /* Old browsers */
+		background: -moz-linear-gradient(45deg, #e5e5e5 0%, #bcbcbc 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(45deg, #e5e5e5 0%,#bcbcbc 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(45deg, #e5e5e5 0%,#bcbcbc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#bcbcbc',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	}
+	.banner {
+		width:100%;
+		margin-bottom:5px;
+	}
+
+	.step {
+		display: inline-block;
+		line-height: 1;
+		width: 10%;
+	}
+     
+	.size-16 { font-size: 16px; }
+     
+	.bg-4 { 
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#2f2f2f+0,212121+100 */
+		background: rgb(47,47,47); /* Old browsers */
+		background: -moz-linear-gradient(top, rgba(47,47,47,1) 0%, rgba(33,33,33,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, rgba(47,47,47,1) 0%,rgba(33,33,33,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, rgba(47,47,47,1) 0%,rgba(33,33,33,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2f2f2f', endColorstr='#212121',GradientType=0 ); /* IE6-9 */
+      color: #fff;
+    }
+    
+	.container-fluid-footer {
+      padding-top: 15px;
+      padding-bottom: 7px;
+    }
+	
+	nav{
+		margin-left:10px;
+		margin-right:10px;
+		padding-left:13px;
+		padding-right:10px;
+	}
+	
+	.navhead{
+		margin-bottom:-15px;
+	}
+	
+	footer {
+		margin-left:10px;
+		margin-right:10px;
+		border-radius: 5px;
+	}
+	</style>
+	{% load staticfiles %}
+	
+	<link rel='stylesheet' href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/foundation-icons.css' %}" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body class="headbody">
+
+	<img class="banner" src="{% static 'img/the_banner.png' %}" alt="Banner Image" />
+
+	<div class="navhead">
+	<nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	  
+		<div class="navbar-header">
+			<ul class="nav navbar-nav">
+				<li><a><span class="glyphicon glyphicon-fire">&nbsp;&nbsp;</span></a></li>
+			</ul>
+		</div>
+		
+		<ul class="nav navbar-nav">
+		  <li class="active"><a href="{% url 'index' %}">Home</a></li>
+		  
+		  <li><a href="{% url 'app' %}">AWARE</a></li>
+		  
+		  <li><a href="{% url 'outreach' %}">Outreach</a></li>
+		  
+		  <li><a href="{% url 'docs' %}">Documentation</a></li>
+		  
+		  <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Who are we? <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+			  <li><a href="{% url 'mission' %}">Our Mission</a></li>
+			  <li><a href="{% url 'team' %}">Team Members</a></li>
+			  <li><a href="{% url 'contact' %}">Contact Us</a></li>
+			</ul>
+		  </li>
+		  
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+
+			<li><a href="https://github.com/TheProgrammingDuck/Europa-Challenge"><i class="step fi-social-github size-16"></i>&nbsp;&nbsp;&nbsp;&nbsp;Github</a></li>
+			<li><a href="https://twitter.com/wildfire_aware" target="_blank"><i class="step fi-social-twitter size-16"></i>&nbsp;&nbsp;&nbsp;&nbsp;Twitter</a></li>
+			<li><a href="https://www.facebook.com/AlgorithmicWildfirePrediction/" target="_blank"><i class="step fi-social-facebook size-16"></i>&nbsp;&nbsp;&nbsp;&nbsp;Facebook</a></li>
+		</ul>
+	  </div>
+	</nav>
+	</div>
+	
+	{% block content %}
+	{% endblock %}
+	
+	<footer class="container-fluid-footer bg-4 text-center">
+	  <p>&copy;	EuropeanDucks 2017</p>
+	</footer>
+	<p></p>
+</body>
+
+</html>
