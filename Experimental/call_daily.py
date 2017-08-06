@@ -1,4 +1,8 @@
-import datetime
+'''
+Author: Vishal Soomaney
+@License: MIT, See License.txt at root of project. 
+This script is called everyday by the server. It calls the relevant scripts to get new model predictions
+'''
 from threading import Timer
 import dark_sky as darksky
 import MakePrediction as MakePrediction
