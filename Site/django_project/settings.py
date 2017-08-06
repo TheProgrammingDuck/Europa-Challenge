@@ -24,7 +24,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['178.62.20.81','wildfireaware.co.uk','www.wildfireaware.co.uk']
+ALLOWED_HOSTS = ['127.0.0.1','wildfireaware.co.uk','www.wildfireaware.co.uk']
 
 
 # Application definition
