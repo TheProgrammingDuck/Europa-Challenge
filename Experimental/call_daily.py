@@ -1,8 +1,3 @@
-'''
-Author: Vishal Soomaney
-@License: MIT, See License.txt at root of project. 
-This script is called everyday by the server. It calls the relevant scripts to get new model predictions
-'''
 from threading import Timer
 import dark_sky as darksky
 import MakePrediction as MakePrediction
@@ -13,7 +8,7 @@ import time
 Dark Sky key has been removed so that it cannot be copied and used by another"""
 
 file='forest_locations.csv'
-key = ''
+key = 'e5d530b79eb4c2232e41a7ab30a208e4'
 
 """Initialising once, all scripts have been optimised so that they don't 
 have to be reinitialised to handle updated data"""
@@ -26,7 +21,7 @@ def call_daily():
     "makePrediction.prediction()" is used by webworldwind"""
     weatherGetter.produce_Output("add1")
     print("1 day of data added")
-    weatherGetter.produce_final()
+    weatherGetter.produce_average()
     print("14 day averages updated")
     weatherGetter.produce_Output("future")
     print("Future forecast obtained")
